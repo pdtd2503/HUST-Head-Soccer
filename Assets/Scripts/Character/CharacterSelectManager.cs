@@ -9,6 +9,11 @@ public class CharacterSelectManager : MonoBehaviour
     public TMP_Text smeLabel;
     public TMP_Text soictLabel;
 
+    public CharacterData seeeData;
+    public CharacterData sclcData;
+    public CharacterData smeData;
+    public CharacterData soictData;
+
     private bool choosingPlayer1 = true;
 
     void Start()
@@ -18,7 +23,6 @@ public class CharacterSelectManager : MonoBehaviour
 
     public void SelectCharacter(string characterName)
     {
-        // Đã chọn đủ 2 người thì không cho chọn tiếp
         if (GameData.player1Character != "" &&
             GameData.player2Character != "")
         {
@@ -28,6 +32,7 @@ public class CharacterSelectManager : MonoBehaviour
         if (choosingPlayer1)
         {
             GameData.player1Character = characterName;
+            GameData.player1Data = GetCharacterData(characterName);
 
             AddLabel(characterName, "P1");
 
@@ -36,9 +41,30 @@ public class CharacterSelectManager : MonoBehaviour
         else
         {
             GameData.player2Character = characterName;
+            GameData.player2Data = GetCharacterData(characterName);
 
             AddLabel(characterName, "P2");
         }
+    }
+
+    CharacterData GetCharacterData(string characterName)
+    {
+        switch (characterName)
+        {
+            case "SEEE":
+                return seeeData;
+
+            case "SCLC":
+                return sclcData;
+
+            case "SME":
+                return smeData;
+
+            case "SOICT":
+                return soictData;
+        }
+
+        return null;
     }
 
     void AddLabel(string characterName, string playerTag)
@@ -82,6 +108,9 @@ public class CharacterSelectManager : MonoBehaviour
         GameData.player1Character = "";
         GameData.player2Character = "";
 
+        GameData.player1Data = null;
+        GameData.player2Data = null;
+
         choosingPlayer1 = true;
 
         seeeLabel.text = "";
@@ -92,8 +121,8 @@ public class CharacterSelectManager : MonoBehaviour
 
     public void StartMatch()
     {
-        if (GameData.player1Character == "" ||
-            GameData.player2Character == "")
+        if (GameData.player1Data == null ||
+            GameData.player2Data == null)
         {
             Debug.Log("Chua chon du nhan vat");
             return;

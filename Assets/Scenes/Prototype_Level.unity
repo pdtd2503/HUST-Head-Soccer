@@ -154,6 +154,52 @@ Transform:
   - {fileID: 1880900650}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &67811727
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 67811729}
+  - component: {fileID: 67811728}
+  m_Layer: 0
+  m_Name: CharacterLoader
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &67811728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 67811727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ff598d2c83ce4616893b68c62e516fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterLoader
+  player1: {fileID: 1837662741}
+  player2: {fileID: 2087302478}
+--- !u!4 &67811729
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 67811727}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 412.74622, y: 210.625, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &134755701
 GameObject:
   m_ObjectHideFlags: 0
@@ -2669,7 +2715,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43463c7c6707d6a48b3eb27f1ec9aae5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FootKinematicKickTest
-  kickKey: 264
+  kickKey: 13
   player: {fileID: 0}
   kickDirection: 1
   startLocalPosition: {x: 0.35, y: -0.65}
@@ -3253,3 +3299,4 @@ SceneRoots:
   - {fileID: 2087302477}
   - {fileID: 1312919866}
   - {fileID: 1969200887}
+  - {fileID: 67811729}

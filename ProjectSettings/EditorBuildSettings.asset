@@ -13,7 +13,7 @@ EditorBuildSettings:
     guid: 0d6e19a5f366c4aa9adb5f9b73a315df
   - enabled: 1
     path: Assets/Scenes/Prototype_Level.unity
-    guid: 2114170e12d78664790bd3578908b08b
+    guid: 979a98d0f94ef4e9aba5abeb3421c7b6
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
