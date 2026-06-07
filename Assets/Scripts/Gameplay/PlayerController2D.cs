@@ -5,6 +5,13 @@ public class PlayerController2D : MonoBehaviour
     [Header("Character Data")]
     public CharacterData characterData;
 
+    [Tooltip("Player 1 dùng sprite quay sang phải, Player 2 dùng sprite quay sang trái")]
+    public bool isPlayer1 = true;
+
+    [Header("Character Visual")]
+    public SpriteRenderer headRenderer;
+    public SpriteRenderer footRenderer;
+
     [Header("Input")]
     public KeyCode leftKey;
     public KeyCode rightKey;
@@ -15,7 +22,6 @@ public class PlayerController2D : MonoBehaviour
     public float jumpForceMultiplier = 5f;
 
     private Rigidbody2D rb;
-    private SpriteRenderer sr;
 
     private bool isGrounded;
     private float moveInput;
@@ -26,7 +32,6 @@ public class PlayerController2D : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        sr = GetComponent<SpriteRenderer>();
     }
 
     void Start()
@@ -54,10 +59,7 @@ public class PlayerController2D : MonoBehaviour
             return;
         }
 
-        if (sr != null && characterData.characterSprite != null)
-        {
-            sr.sprite = characterData.characterSprite;
-        }
+        ApplyCharacterVisual();
 
         float designSpeed =
             CharacterStats.GetSpeed(characterData.speedStars);
@@ -83,6 +85,34 @@ public class PlayerController2D : MonoBehaviour
 
         Debug.Log(
             $"{name} applied: Speed={moveSpeed}, Jump={jumpForce}, Mass={mass}");
+    }
+
+    private void ApplyCharacterVisual()
+    {
+        if (isPlayer1)
+        {
+            if (headRenderer != null)
+            {
+                headRenderer.sprite = characterData.headRightSprite;
+            }
+
+            if (footRenderer != null)
+            {
+                footRenderer.sprite = characterData.footRightSprite;
+            }
+        }
+        else
+        {
+            if (headRenderer != null)
+            {
+                headRenderer.sprite = characterData.headLeftSprite;
+            }
+
+            if (footRenderer != null)
+            {
+                footRenderer.sprite = characterData.footLeftSprite;
+            }
+        }
     }
 
     void ReadMoveInput()

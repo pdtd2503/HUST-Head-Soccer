@@ -14,8 +14,15 @@ public class CharacterData : ScriptableObject
 {
     public string characterName;
 
-    public Sprite characterSprite;
+    [Header("Head Sprites")]
+    public Sprite headRightSprite; // Dùng cho Player 1
+    public Sprite headLeftSprite;  // Dùng cho Player 2
 
+    [Header("Foot Sprites")]
+    public Sprite footRightSprite; // Dùng cho Player 1
+    public Sprite footLeftSprite;  // Dùng cho Player 2
+
+    [Header("Stats")]
     [Range(1, 5)]
     public int jumpStars;
 
