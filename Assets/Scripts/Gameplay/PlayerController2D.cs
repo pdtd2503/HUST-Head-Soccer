@@ -5,6 +5,13 @@ public class PlayerController2D : MonoBehaviour
     [Header("Character Data")]
     public CharacterData characterData;
 
+    [Tooltip("Player 1 dùng sprite quay sang phải, Player 2 dùng sprite quay sang trái")]
+    public bool isPlayer1 = true;
+
+    [Header("Character Visual")]
+    public SpriteRenderer headRenderer;
+    public SpriteRenderer footRenderer;
+
     [Header("Input")]
     public KeyCode leftKey;
     public KeyCode rightKey;
@@ -15,6 +22,7 @@ public class PlayerController2D : MonoBehaviour
     public float jumpForceMultiplier = 5f;
 
     private Rigidbody2D rb;
+
     private bool isGrounded;
     private float moveInput;
 
@@ -39,10 +47,11 @@ public class PlayerController2D : MonoBehaviour
 
     void FixedUpdate()
     {
-        rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
+        rb.linearVelocity =
+            new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
     }
 
-    void ApplyCharacterData()
+    public void ApplyCharacterData()
     {
         if (characterData == null)
         {
@@ -50,19 +59,60 @@ public class PlayerController2D : MonoBehaviour
             return;
         }
 
-        float designSpeed = CharacterStats.GetSpeed(characterData.speedStars);
-        float jumpReach = CharacterStats.GetJumpReach(characterData.jumpStars);
-        float mass = CharacterStats.GetMass(characterData.massStars);
+        ApplyCharacterVisual();
+
+        float designSpeed =
+            CharacterStats.GetSpeed(characterData.speedStars);
+
+        float jumpReach =
+            CharacterStats.GetJumpReach(characterData.jumpStars);
+
+        float mass =
+            CharacterStats.GetMass(characterData.massStars);
 
         moveSpeed = designSpeed * moveMultiplier;
 
         float jumpCenterHeight = jumpReach - 1f;
-        float gravity = Mathf.Abs(Physics2D.gravity.y * rb.gravityScale);
-        jumpForce = Mathf.Sqrt(2f * gravity * jumpCenterHeight) * jumpForceMultiplier;
+
+        float gravity =
+            Mathf.Abs(Physics2D.gravity.y * rb.gravityScale);
+
+        jumpForce =
+            Mathf.Sqrt(2f * gravity * jumpCenterHeight)
+            * jumpForceMultiplier;
 
         rb.mass = mass;
 
-        Debug.Log($"{name} applied: Speed={moveSpeed}, JumpVelocity={jumpForce}, Mass={mass}");
+        Debug.Log(
+            $"{name} applied: Speed={moveSpeed}, Jump={jumpForce}, Mass={mass}");
+    }
+
+    private void ApplyCharacterVisual()
+    {
+        if (isPlayer1)
+        {
+            if (headRenderer != null)
+            {
+                headRenderer.sprite = characterData.headRightSprite;
+            }
+
+            if (footRenderer != null)
+            {
+                footRenderer.sprite = characterData.footRightSprite;
+            }
+        }
+        else
+        {
+            if (headRenderer != null)
+            {
+                headRenderer.sprite = characterData.headLeftSprite;
+            }
+
+            if (footRenderer != null)
+            {
+                footRenderer.sprite = characterData.footLeftSprite;
+            }
+        }
     }
 
     void ReadMoveInput()
@@ -83,7 +133,9 @@ public class PlayerController2D : MonoBehaviour
     {
         if (Input.GetKeyDown(jumpKey) && isGrounded)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            rb.linearVelocity =
+                new Vector2(rb.linearVelocity.x, jumpForce);
+
             isGrounded = false;
         }
     }
