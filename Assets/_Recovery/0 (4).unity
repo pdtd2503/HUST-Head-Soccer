@@ -268,7 +268,7 @@ GameObject:
   - component: {fileID: 427786021}
   - component: {fileID: 427786022}
   m_Layer: 5
-  m_Name: SCLS_label
+  m_Name: SCLC_label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1909,11 +1909,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterSelectManager
   seeeLabel: {fileID: 360522995}
-  sclsLabel: {fileID: 427786022}
+  sclcLabel: {fileID: 427786022}
   smeLabel: {fileID: 815220028}
   soictLabel: {fileID: 1249797931}
   seeeData: {fileID: 11400000, guid: 355ef55cdd56e4e31a697589c0bcd4a8, type: 2}
-  sclsData: {fileID: 11400000, guid: 666a06c9f149a4669b1d4cfc2b223317, type: 2}
+  sclcData: {fileID: 11400000, guid: 666a06c9f149a4669b1d4cfc2b223317, type: 2}
   smeData: {fileID: 11400000, guid: 5587deddcb0bb4a92b32b1ce63f1a7a2, type: 2}
   soictData: {fileID: 11400000, guid: c6f2460f6c9314715a373d5d10bd1885, type: 2}
 --- !u!4 &1538824270
@@ -2077,7 +2077,7 @@ GameObject:
   - component: {fileID: 1832764591}
   - component: {fileID: 1832764590}
   m_Layer: 5
-  m_Name: SCLS_image
+  m_Name: SCLC_image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2156,7 +2156,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: SCLS
+          m_StringArgument: SCLC
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1832764591

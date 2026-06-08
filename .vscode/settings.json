@@ -67,5 +67,5 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "HUST-Head-Soccer-feature-minh-update-sprites.slnx"
+    "dotnet.defaultSolution": "HUST-Head-Soccer.slnx"
 }

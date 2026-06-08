@@ -166,6 +166,17 @@ public class MatchManager : MonoBehaviour
         ResetBody(player1, player1Spawn);
         ResetBody(player2, player2Spawn);
 
+        if (ball != null)
+        {
+            BallStraightShotState straightShotState =
+                ball.GetComponent<BallStraightShotState>();
+
+            if (straightShotState != null)
+            {
+                straightShotState.ForceRestoreNormalBall();
+            }
+        }
+
         if (ball != null && ballSpawn != null)
         {
             ball.position = ballSpawn.position;
@@ -237,5 +248,10 @@ public class MatchManager : MonoBehaviour
     public int GetPlayer2Score()
     {
         return player2Score;
+    }
+
+    public bool CanUsePlayerActions()
+    {
+        return matchRunning && !goalSequenceRunning;
     }
 }

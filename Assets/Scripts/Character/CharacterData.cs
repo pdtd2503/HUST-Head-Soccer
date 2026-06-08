@@ -2,10 +2,10 @@ using UnityEngine;
 
 public enum SkillType
 {
-    PowerShot,
-    DoubleJump,
-    Wall,
-    BallBlink
+    SEEE_DashToBall,
+    SME_BallUpDoubleJump,
+    SOICT_StraightShot,
+    SCLS_Poison
 }
 
 [CreateAssetMenu(fileName = "CharacterData",
@@ -15,12 +15,12 @@ public class CharacterData : ScriptableObject
     public string characterName;
 
     [Header("Head Sprites")]
-    public Sprite headRightSprite; // Dùng cho Player 1
-    public Sprite headLeftSprite;  // Dùng cho Player 2
+    public Sprite headRightSprite;
+    public Sprite headLeftSprite;
 
     [Header("Foot Sprites")]
-    public Sprite footRightSprite; // Dùng cho Player 1
-    public Sprite footLeftSprite;  // Dùng cho Player 2
+    public Sprite footRightSprite;
+    public Sprite footLeftSprite;
 
     [Header("Stats")]
     [Range(1, 5)]
@@ -35,5 +35,6 @@ public class CharacterData : ScriptableObject
     [Range(1, 5)]
     public int massStars;
 
+    [Header("Skill")]
     public SkillType skillType;
 }

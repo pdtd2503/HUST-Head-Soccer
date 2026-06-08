@@ -5,11 +5,11 @@ MonoImporter:
   serializedVersion: 2
   defaultReferences:
   - seeeLabel: {instanceID: 0}
-  - sclcLabel: {instanceID: 0}
+  - sclsLabel: {instanceID: 0}
   - smeLabel: {instanceID: 0}
   - soictLabel: {instanceID: 0}
   - seeeData: {fileID: 11400000, guid: 355ef55cdd56e4e31a697589c0bcd4a8, type: 2}
-  - sclcData: {fileID: 11400000, guid: 666a06c9f149a4669b1d4cfc2b223317, type: 2}
+  - sclsData: {fileID: 11400000, guid: 666a06c9f149a4669b1d4cfc2b223317, type: 2}
   - smeData: {fileID: 11400000, guid: 5587deddcb0bb4a92b32b1ce63f1a7a2, type: 2}
   - soictData: {fileID: 11400000, guid: c6f2460f6c9314715a373d5d10bd1885, type: 2}
   executionOrder: 0
