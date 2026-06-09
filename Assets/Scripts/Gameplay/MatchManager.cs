@@ -38,7 +38,7 @@ public class MatchManager : MonoBehaviour
 
     private void Start()
     {
-        timer = halfDuration;
+        timer = 0f;
 
         if (goalText != null)
         {
@@ -56,9 +56,11 @@ public class MatchManager : MonoBehaviour
             return;
         }
 
-        timer -= Time.deltaTime;
+        timer += Time.deltaTime;
 
-        if (timer <= 0f)
+        float halfEndTime = halfDuration * currentHalf;
+
+        if (timer >= halfEndTime)
         {
             EndHalf();
         }
@@ -68,8 +70,9 @@ public class MatchManager : MonoBehaviour
     {
         if (currentHalf < totalHalves)
         {
+            timer = halfDuration * currentHalf;
+
             currentHalf++;
-            timer = halfDuration;
             ResetPositions();
 
             Debug.Log($"Half {currentHalf} started.");
@@ -77,7 +80,9 @@ public class MatchManager : MonoBehaviour
         else
         {
             matchRunning = false;
-            timer = 0f;
+            timer = halfDuration * totalHalves;
+
+            StopAllBodies();
 
             Debug.Log($"Match ended. Final Score: Player 1 {player1Score} - {player2Score} Player 2");
         }
@@ -154,8 +159,12 @@ public class MatchManager : MonoBehaviour
         StopBody(player1);
         StopBody(player2);
 
+        RestoreBallSkillState();
+
         if (ballRb != null)
         {
+            ballRb.bodyType = RigidbodyType2D.Dynamic;
+            ballRb.constraints = RigidbodyConstraints2D.None;
             ballRb.linearVelocity = Vector2.zero;
             ballRb.angularVelocity = 0f;
         }
@@ -166,16 +175,7 @@ public class MatchManager : MonoBehaviour
         ResetBody(player1, player1Spawn);
         ResetBody(player2, player2Spawn);
 
-        if (ball != null)
-        {
-            BallStraightShotState straightShotState =
-                ball.GetComponent<BallStraightShotState>();
-
-            if (straightShotState != null)
-            {
-                straightShotState.ForceRestoreNormalBall();
-            }
-        }
+        RestoreBallSkillState();
 
         if (ball != null && ballSpawn != null)
         {
@@ -184,8 +184,26 @@ public class MatchManager : MonoBehaviour
 
         if (ballRb != null)
         {
+            ballRb.bodyType = RigidbodyType2D.Dynamic;
+            ballRb.constraints = RigidbodyConstraints2D.None;
             ballRb.linearVelocity = Vector2.zero;
             ballRb.angularVelocity = 0f;
+        }
+    }
+
+    private void RestoreBallSkillState()
+    {
+        if (ball == null)
+        {
+            return;
+        }
+
+        SoictBallStraightShotRuntime straightShotRuntime =
+            ball.GetComponent<SoictBallStraightShotRuntime>();
+
+        if (straightShotRuntime != null)
+        {
+            straightShotRuntime.ForceRestoreNormalBall();
         }
     }
 
@@ -253,5 +271,10 @@ public class MatchManager : MonoBehaviour
     public bool CanUsePlayerActions()
     {
         return matchRunning && !goalSequenceRunning;
+    }
+
+    public bool IsMatchRunning()
+    {
+        return matchRunning;
     }
 }
