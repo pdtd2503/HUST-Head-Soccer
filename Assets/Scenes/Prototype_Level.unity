@@ -834,7 +834,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43463c7c6707d6a48b3eb27f1ec9aae5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FootKinematicKickTest
-  kickKey: 102
+  kickKey: 32
   player: {fileID: 0}
   kickDirection: 1
   startLocalPosition: {x: -0.35, y: -0.65}
@@ -3122,7 +3122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43463c7c6707d6a48b3eb27f1ec9aae5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FootKinematicKickTest
-  kickKey: 109
+  kickKey: 112
   player: {fileID: 0}
   kickDirection: 1
   startLocalPosition: {x: 0.35, y: -0.65}
