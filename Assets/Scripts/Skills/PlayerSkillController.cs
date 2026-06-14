@@ -18,14 +18,25 @@ public class PlayerSkillController : MonoBehaviour
     private SCLSSkill sclsSkill;
     private SEEESkill seeeSkill;
 
+    private float skillCharge;
+    private float currentCooldownDuration;
+    private const float SOICT_COOLDOWN = 10f;
+    private const float SME_COOLDOWN = 12f;
+    private const float SCLS_COOLDOWN = 14f;
+    private const float SEEE_COOLDOWN = 8f;
+
     private void Awake()
-    {
-        ResolveReferences();
-        SetupSkillComponents();
-    }
+{
+    ResolveReferences();
+    SetupSkillComponents();
+
+    currentCooldownDuration = GetCooldownDuration();
+    skillCharge = currentCooldownDuration;
+}
 
     private void Update()
     {
+        UpdateSkillCharge();
         if (!Input.GetKeyDown(skillKey))
         {
             return;
@@ -38,6 +49,7 @@ public class PlayerSkillController : MonoBehaviour
 
         RefreshBallReferenceIfNeeded();
         UseSkill(playerController.characterData.skillType);
+        ResetSkillCharge();
     }
 
     private void ResolveReferences()
@@ -72,6 +84,10 @@ public class PlayerSkillController : MonoBehaviour
         if (playerController.characterData == null)
         {
             Debug.LogWarning($"{name} missing CharacterData.");
+            return false;
+        }
+        if (skillCharge < currentCooldownDuration)
+        {
             return false;
         }
 
@@ -177,4 +193,72 @@ public class PlayerSkillController : MonoBehaviour
 
         Time.timeScale = 1f;
     }
+    private void UpdateSkillCharge()
+{
+    if (currentCooldownDuration <= 0f)
+    {
+        currentCooldownDuration = GetCooldownDuration();
+    }
+
+    if (skillCharge < currentCooldownDuration)
+    {
+        skillCharge += Time.deltaTime;
+
+        if (skillCharge > currentCooldownDuration)
+        {
+            skillCharge = currentCooldownDuration;
+        }
+    }
+}
+
+private void ResetSkillCharge()
+{
+    currentCooldownDuration = GetCooldownDuration();
+    skillCharge = 0f;
+}
+
+private float GetCooldownBySkillType(SkillType skillType)
+{
+    switch (skillType)
+    {
+        case SkillType.SOICT:
+            return SOICT_COOLDOWN;
+
+        case SkillType.SME:
+            return SME_COOLDOWN;
+
+        case SkillType.SCLS:
+            return SCLS_COOLDOWN;
+
+        case SkillType.SEEE:
+            return SEEE_COOLDOWN;
+
+        default:
+            return 10f;
+    }
+}
+
+public float GetCooldownDuration()
+{
+    if (playerController == null || playerController.characterData == null)
+    {
+        return 1f;
+    }
+
+    return GetCooldownBySkillType(
+        playerController.characterData.skillType
+    );
+}
+
+public float GetSkillChargeRatio()
+{
+    if (currentCooldownDuration <= 0f)
+    {
+        return 1f;
+    }
+
+    return Mathf.Clamp01(
+        skillCharge / currentCooldownDuration
+    );
+}
 }
