@@ -18,7 +18,7 @@ MonoBehaviour:
   footRightSprite: {fileID: 21300000, guid: 1973ac0954dbb5840ba337822400b5ef, type: 3}
   footLeftSprite: {fileID: 21300000, guid: aa3c094ee03f8404b9a0b55d855028de, type: 3}
   jumpStars: 3
-  speedStars: 5
+  speedStars: 2
   kickStars: 3
   massStars: 5
-  skillType: 2
+  skillType: 1

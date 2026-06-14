@@ -5,12 +5,12 @@ using UnityEngine.SceneManagement;
 public class CharacterSelectManager : MonoBehaviour
 {
     public TMP_Text seeeLabel;
-    public TMP_Text sclcLabel;
+    public TMP_Text sclsLabel;
     public TMP_Text smeLabel;
     public TMP_Text soictLabel;
 
     public CharacterData seeeData;
-    public CharacterData sclcData;
+    public CharacterData sclsData;
     public CharacterData smeData;
     public CharacterData soictData;
 
@@ -29,21 +29,33 @@ public class CharacterSelectManager : MonoBehaviour
             return;
         }
 
+        CharacterData selectedData = GetCharacterData(characterName);
+
+        if (selectedData == null)
+        {
+            Debug.LogWarning($"No CharacterData found for {characterName}");
+            return;
+        }
+
         if (choosingPlayer1)
         {
             GameData.player1Character = characterName;
-            GameData.player1Data = GetCharacterData(characterName);
+            GameData.player1Data = selectedData;
 
             AddLabel(characterName, "P1");
 
             choosingPlayer1 = false;
+
+            Debug.Log($"Player 1 selected: {characterName}");
         }
         else
         {
             GameData.player2Character = characterName;
-            GameData.player2Data = GetCharacterData(characterName);
+            GameData.player2Data = selectedData;
 
             AddLabel(characterName, "P2");
+
+            Debug.Log($"Player 2 selected: {characterName}");
         }
     }
 
@@ -54,8 +66,8 @@ public class CharacterSelectManager : MonoBehaviour
             case "SEEE":
                 return seeeData;
 
-            case "SCLC":
-                return sclcData;
+            case "SCLS":
+                return sclsData;
 
             case "SME":
                 return smeData;
@@ -69,29 +81,13 @@ public class CharacterSelectManager : MonoBehaviour
 
     void AddLabel(string characterName, string playerTag)
     {
-        TMP_Text targetLabel = null;
-
-        switch (characterName)
-        {
-            case "SEEE":
-                targetLabel = seeeLabel;
-                break;
-
-            case "SCLC":
-                targetLabel = sclcLabel;
-                break;
-
-            case "SME":
-                targetLabel = smeLabel;
-                break;
-
-            case "SOICT":
-                targetLabel = soictLabel;
-                break;
-        }
+        TMP_Text targetLabel = GetLabel(characterName);
 
         if (targetLabel == null)
+        {
+            Debug.LogWarning($"No label found for {characterName}");
             return;
+        }
 
         if (targetLabel.text == "")
         {
@@ -101,6 +97,26 @@ public class CharacterSelectManager : MonoBehaviour
         {
             targetLabel.text += " " + playerTag;
         }
+    }
+
+    TMP_Text GetLabel(string characterName)
+    {
+        switch (characterName)
+        {
+            case "SEEE":
+                return seeeLabel;
+
+            case "SCLS":
+                return sclsLabel;
+
+            case "SME":
+                return smeLabel;
+
+            case "SOICT":
+                return soictLabel;
+        }
+
+        return null;
     }
 
     public void ResetSelection()
@@ -113,10 +129,20 @@ public class CharacterSelectManager : MonoBehaviour
 
         choosingPlayer1 = true;
 
-        seeeLabel.text = "";
-        sclcLabel.text = "";
-        smeLabel.text = "";
-        soictLabel.text = "";
+        ClearLabel(seeeLabel);
+        ClearLabel(sclsLabel);
+        ClearLabel(smeLabel);
+        ClearLabel(soictLabel);
+
+        Debug.Log("Selection reset.");
+    }
+
+    void ClearLabel(TMP_Text label)
+    {
+        if (label != null)
+        {
+            label.text = "";
+        }
     }
 
     public void StartMatch()

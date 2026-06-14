@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerController2D : MonoBehaviour
@@ -27,7 +28,16 @@ public class PlayerController2D : MonoBehaviour
     private float moveInput;
 
     private float moveSpeed;
+    private float baseMoveSpeed;
     private float jumpForce;
+
+    private bool isStunned;
+
+    private bool nextJumpHasDoubleJump;
+    private int extraJumpsRemaining;
+
+    private Coroutine stunCoroutine;
+    private Coroutine speedBoostCoroutine;
 
     void Awake()
     {
@@ -47,8 +57,13 @@ public class PlayerController2D : MonoBehaviour
 
     void FixedUpdate()
     {
-        rb.linearVelocity =
-            new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
+        if (isStunned)
+        {
+            rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+            return;
+        }
+
+        rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
     }
 
     public void ApplyCharacterData()
@@ -61,34 +76,30 @@ public class PlayerController2D : MonoBehaviour
 
         ApplyCharacterVisual();
 
-        float designSpeed =
-            CharacterStats.GetSpeed(characterData.speedStars);
+        float designSpeed = CharacterStats.GetSpeed(characterData.speedStars);
+        float jumpReach = CharacterStats.GetJumpReach(characterData.jumpStars);
+        float mass = CharacterStats.GetMass(characterData.massStars);
 
-        float jumpReach =
-            CharacterStats.GetJumpReach(characterData.jumpStars);
-
-        float mass =
-            CharacterStats.GetMass(characterData.massStars);
-
-        moveSpeed = designSpeed * moveMultiplier;
+        baseMoveSpeed = designSpeed * moveMultiplier;
+        moveSpeed = baseMoveSpeed;
 
         float jumpCenterHeight = jumpReach - 1f;
+        float gravity = Mathf.Abs(Physics2D.gravity.y * rb.gravityScale);
 
-        float gravity =
-            Mathf.Abs(Physics2D.gravity.y * rb.gravityScale);
-
-        jumpForce =
-            Mathf.Sqrt(2f * gravity * jumpCenterHeight)
-            * jumpForceMultiplier;
+        jumpForce = Mathf.Sqrt(2f * gravity * jumpCenterHeight) * jumpForceMultiplier;
 
         rb.mass = mass;
 
-        Debug.Log(
-            $"{name} applied: Speed={moveSpeed}, Jump={jumpForce}, Mass={mass}");
+        Debug.Log($"{name} applied: Speed={moveSpeed}, Jump={jumpForce}, Mass={mass}");
     }
 
     private void ApplyCharacterVisual()
     {
+        if (characterData == null)
+        {
+            return;
+        }
+
         if (isPlayer1)
         {
             if (headRenderer != null)
@@ -117,6 +128,12 @@ public class PlayerController2D : MonoBehaviour
 
     void ReadMoveInput()
     {
+        if (isStunned)
+        {
+            moveInput = 0f;
+            return;
+        }
+
         moveInput = 0f;
 
         if (Input.GetKey(leftKey))
@@ -131,13 +148,40 @@ public class PlayerController2D : MonoBehaviour
 
     void ReadJumpInput()
     {
-        if (Input.GetKeyDown(jumpKey) && isGrounded)
+        if (isStunned)
         {
-            rb.linearVelocity =
-                new Vector2(rb.linearVelocity.x, jumpForce);
+            return;
+        }
+
+        if (!Input.GetKeyDown(jumpKey))
+        {
+            return;
+        }
+
+        if (isGrounded)
+        {
+            Jump();
+
+            if (nextJumpHasDoubleJump)
+            {
+                extraJumpsRemaining = 1;
+                nextJumpHasDoubleJump = false;
+            }
 
             isGrounded = false;
+            return;
         }
+
+        if (extraJumpsRemaining > 0)
+        {
+            Jump();
+            extraJumpsRemaining--;
+        }
+    }
+
+    private void Jump()
+    {
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
     }
 
     void OnCollisionStay2D(Collision2D collision)
@@ -165,5 +209,63 @@ public class PlayerController2D : MonoBehaviour
         {
             isGrounded = false;
         }
+    }
+
+    public void EnableNextDoubleJump()
+    {
+        nextJumpHasDoubleJump = true;
+        extraJumpsRemaining = 0;
+    }
+
+    public void Stun(float duration)
+    {
+        if (stunCoroutine != null)
+        {
+            StopCoroutine(stunCoroutine);
+        }
+
+        stunCoroutine = StartCoroutine(StunRoutine(duration));
+    }
+
+    private IEnumerator StunRoutine(float duration)
+    {
+        isStunned = true;
+        moveInput = 0f;
+        rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+
+        yield return new WaitForSeconds(duration);
+
+        isStunned = false;
+        stunCoroutine = null;
+    }
+
+    public void SetTemporarySpeedStars(int stars, float duration)
+    {
+        if (speedBoostCoroutine != null)
+        {
+            StopCoroutine(speedBoostCoroutine);
+        }
+
+        speedBoostCoroutine = StartCoroutine(TemporarySpeedRoutine(stars, duration));
+    }
+
+    private IEnumerator TemporarySpeedRoutine(int stars, float duration)
+    {
+        moveSpeed = CharacterStats.GetSpeed(stars) * moveMultiplier;
+
+        yield return new WaitForSeconds(duration);
+
+        moveSpeed = baseMoveSpeed;
+        speedBoostCoroutine = null;
+    }
+
+    public Rigidbody2D GetBody()
+    {
+        return rb;
+    }
+
+    public int GetAttackDirection()
+    {
+        return isPlayer1 ? 1 : -1;
     }
 }

@@ -2,6 +2,14 @@ using UnityEngine;
 
 public class FootKinematicKickTest : MonoBehaviour
 {
+    private enum KickState
+    {
+        Ready,
+        Kicking,
+        Holding,
+        Returning
+    }
+
     [Header("Input")]
     public KeyCode kickKey = KeyCode.F;
 
@@ -21,9 +29,11 @@ public class FootKinematicKickTest : MonoBehaviour
 
     [Header("Speed")]
     public float swingTime = 0.12f;
+    public float returnTime = 0.12f;
 
     private Rigidbody2D rb;
     private float progress;
+    private KickState state = KickState.Ready;
 
     private void Awake()
     {
@@ -37,24 +47,56 @@ public class FootKinematicKickTest : MonoBehaviour
             player = transform.parent;
         }
 
+        progress = 0f;
+        state = KickState.Ready;
         ApplyPose(0f);
+    }
+
+    private void Update()
+    {
+        if (state == KickState.Ready && Input.GetKeyDown(kickKey))
+        {
+            state = KickState.Kicking;
+        }
+
+        if (state == KickState.Holding && Input.GetKeyUp(kickKey))
+        {
+            state = KickState.Returning;
+        }
     }
 
     private void FixedUpdate()
     {
-        float speed = 1f / swingTime;
+        if (state == KickState.Kicking)
+        {
+            progress += Time.fixedDeltaTime / swingTime;
 
-        if (Input.GetKey(kickKey))
-        {
-            progress += speed * Time.fixedDeltaTime;
+            if (progress >= 1f)
+            {
+                progress = 1f;
+
+                if (Input.GetKey(kickKey))
+                {
+                    state = KickState.Holding;
+                }
+                else
+                {
+                    state = KickState.Returning;
+                }
+            }
         }
-        else
+        else if (state == KickState.Returning)
         {
-            progress -= speed * Time.fixedDeltaTime;
+            progress -= Time.fixedDeltaTime / returnTime;
+
+            if (progress <= 0f)
+            {
+                progress = 0f;
+                state = KickState.Ready;
+            }
         }
 
         progress = Mathf.Clamp01(progress);
-
         ApplyPose(progress);
     }
 
@@ -78,7 +120,6 @@ public class FootKinematicKickTest : MonoBehaviour
         }
 
         Vector2 localPosition = Vector2.Lerp(localStart, localEnd, smoothT);
-
         Vector3 worldPosition = player.TransformPoint(localPosition);
 
         float worldAngle = Mathf.LerpAngle(angleStart, angleEnd, smoothT);
