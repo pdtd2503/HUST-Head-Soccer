@@ -19,5 +19,9 @@ MonoBehaviour:
   footLeftSprite: {fileID: 21300000, guid: aa3c094ee03f8404b9a0b55d855028de, type: 3}
   jumpStars: 2
   speedStars: 4
+  kickStars: 1
   massStars: 5
   skillType: 1
+  skillDescription: "Tri\u1EC7u h\u1ED3i chi\u1EBFc c\u1EDD l\xEA kh\u1ED5ng l\u1ED3
+    tr\u01B0\u1EDBc khung th\xE0nh ng\u0103n ch\u1EB7n m\u1ECDi \u0111\u01B0\u1EDDng
+    b\xF3ng trong 3 gi\xE2y "

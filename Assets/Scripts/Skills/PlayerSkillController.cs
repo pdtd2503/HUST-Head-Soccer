@@ -2,38 +2,55 @@ using UnityEngine;
 
 public class PlayerSkillController : MonoBehaviour
 {
-    [Header("Input")]
-    [SerializeField] private KeyCode skillKey = KeyCode.LeftShift;
+    private const KeyCode PLAYER_1_SKILL_KEY = KeyCode.LeftShift;
+    private const KeyCode PLAYER_2_SKILL_KEY = KeyCode.O;
 
-    [Header("References")]
-    [SerializeField] private PlayerController2D playerController;
-    [SerializeField] private PlayerController2D opponentController;
-    [SerializeField] private MatchManager matchManager;
-    [SerializeField] private Transform ball;
-    [SerializeField] private Rigidbody2D ballRb;
+    private const float SOICT_COOLDOWN = 10f;
+    private const float SME_COOLDOWN = 12f;
+    private const float SCLS_COOLDOWN = 14f;
+    private const float SEEE_COOLDOWN = 8f;
 
-    [Header("Cooldown Settings")]
-    [SerializeField] private float soictCooldown = 10f;
-    [SerializeField] private float smeCooldown = 12f;
-    [SerializeField] private float sclsCooldown = 14f;
-    [SerializeField] private float seeeCooldown = 8f;
+    private PlayerController2D playerController;
+    private PlayerController2D opponentController;
+    private MatchManager matchManager;
 
-    private float cooldownTimer;
+    private Transform ball;
+    private Rigidbody2D ballRb;
 
-    private SOICTSkill soictSkill;
-    private SMESkill smeSkill;
-    private SCLSSkill sclsSkill;
-    private SEEESkill seeeSkill;
+    private KeyCode skillKey;
+
+    private float skillCharge;
+    private float currentCooldownDuration;
 
     private void Awake()
     {
-        ResolveReferences();
-        SetupSkillComponents();
+        playerController = GetComponent<PlayerController2D>();
+
+        if (playerController != null && playerController.isPlayer1)
+        {
+            skillKey = PLAYER_1_SKILL_KEY;
+        }
+        else
+        {
+            skillKey = PLAYER_2_SKILL_KEY;
+        }
+
+        matchManager = FindFirstObjectByType<MatchManager>();
+
+        FindBall();
+    }
+
+    private void Start()
+    {
+        FindOpponentController();
+
+        currentCooldownDuration = GetCooldownDuration();
+        skillCharge = 0f;
     }
 
     private void Update()
     {
-        UpdateCooldown();
+        UpdateSkillCharge();
 
         if (!Input.GetKeyDown(skillKey))
         {
@@ -45,78 +62,42 @@ public class PlayerSkillController : MonoBehaviour
             return;
         }
 
-        RefreshBallReferenceIfNeeded();
+        RefreshReferences();
 
         SkillType skillType = playerController.characterData.skillType;
+
         UseSkill(skillType);
-        StartCooldown(skillType);
+        ResetSkillCharge();
     }
 
-    private void UpdateCooldown()
+    private void UpdateSkillCharge()
     {
-        if (cooldownTimer <= 0f)
+        if (matchManager != null && !matchManager.CanUsePlayerActions())
         {
             return;
         }
 
-        cooldownTimer -= Time.deltaTime;
-
-        if (cooldownTimer < 0f)
+        if (currentCooldownDuration <= 0f)
         {
-            cooldownTimer = 0f;
-        }
-    }
-
-    private void StartCooldown(SkillType skillType)
-    {
-        cooldownTimer = GetCooldownBySkillType(skillType);
-    }
-
-    private float GetCooldownBySkillType(SkillType skillType)
-    {
-        switch (skillType)
-        {
-            case SkillType.SOICT:
-                return soictCooldown;
-
-            case SkillType.SME:
-                return smeCooldown;
-
-            case SkillType.SCLS:
-                return sclsCooldown;
-
-            case SkillType.SEEE:
-                return seeeCooldown;
-
-            default:
-                return 10f;
-        }
-    }
-
-    private void ResolveReferences()
-    {
-        if (playerController == null)
-        {
-            playerController = GetComponent<PlayerController2D>();
+            currentCooldownDuration = GetCooldownDuration();
         }
 
-        if (matchManager == null)
+        if (skillCharge >= currentCooldownDuration)
         {
-            matchManager = FindFirstObjectByType<MatchManager>();
+            skillCharge = currentCooldownDuration;
+            return;
         }
 
-        FindBall();
-        FindOpponentController();
+        skillCharge += Time.deltaTime;
+
+        if (skillCharge > currentCooldownDuration)
+        {
+            skillCharge = currentCooldownDuration;
+        }
     }
 
     private bool CanUseSkill()
     {
-        if (cooldownTimer > 0f)
-        {
-            Debug.Log($"{name} skill is cooling down: {cooldownTimer:F1}s left.");
-            return false;
-        }
-
         if (matchManager != null && !matchManager.CanUsePlayerActions())
         {
             return false;
@@ -134,14 +115,26 @@ public class PlayerSkillController : MonoBehaviour
             return false;
         }
 
+        if (skillCharge < currentCooldownDuration)
+        {
+            float remainingTime = currentCooldownDuration - skillCharge;
+            Debug.Log($"{name} skill charging: {remainingTime:F1}s remaining");
+            return false;
+        }
+
         return true;
     }
 
-    private void RefreshBallReferenceIfNeeded()
+    private void RefreshReferences()
     {
         if (ball == null || ballRb == null)
         {
             FindBall();
+        }
+
+        if (opponentController == null)
+        {
+            FindOpponentController();
         }
     }
 
@@ -162,9 +155,10 @@ public class PlayerSkillController : MonoBehaviour
 
     private void FindOpponentController()
     {
-        PlayerController2D[] players = FindObjectsByType<PlayerController2D>(
-            FindObjectsSortMode.None
-        );
+        PlayerController2D[] players =
+            FindObjectsByType<PlayerController2D>(
+                FindObjectsSortMode.None
+            );
 
         opponentController = null;
 
@@ -178,44 +172,24 @@ public class PlayerSkillController : MonoBehaviour
         }
     }
 
-    private void SetupSkillComponents()
-    {
-        soictSkill = GetOrAddSkill<SOICTSkill>();
-        smeSkill = GetOrAddSkill<SMESkill>();
-        sclsSkill = GetOrAddSkill<SCLSSkill>();
-        seeeSkill = GetOrAddSkill<SEEESkill>();
-    }
-
-    private T GetOrAddSkill<T>() where T : Component
-    {
-        T skill = GetComponent<T>();
-
-        if (skill == null)
-        {
-            skill = gameObject.AddComponent<T>();
-        }
-
-        return skill;
-    }
-
     private void UseSkill(SkillType skillType)
     {
         switch (skillType)
         {
             case SkillType.SOICT:
-                soictSkill.UseSkill(playerController, ballRb);
+                SOICTSkill.UseSkill(playerController, ballRb);
                 break;
 
             case SkillType.SME:
-                smeSkill.UseSkill(playerController, matchManager);
+                SMESkill.UseSkill(playerController, matchManager);
                 break;
 
             case SkillType.SCLS:
-                sclsSkill.UseSkill(opponentController);
+                SCLSSkill.UseSkill(opponentController);
                 break;
 
             case SkillType.SEEE:
-                seeeSkill.UseSkill(playerController, ball);
+                SEEESkill.UseSkill(playerController, ball);
                 break;
 
             default:
@@ -224,13 +198,66 @@ public class PlayerSkillController : MonoBehaviour
         }
     }
 
+    private void ResetSkillCharge()
+    {
+        currentCooldownDuration = GetCooldownDuration();
+        skillCharge = 0f;
+    }
+
+    private float GetCooldownBySkillType(SkillType skillType)
+    {
+        switch (skillType)
+        {
+            case SkillType.SOICT:
+                return SOICT_COOLDOWN;
+
+            case SkillType.SME:
+                return SME_COOLDOWN;
+
+            case SkillType.SCLS:
+                return SCLS_COOLDOWN;
+
+            case SkillType.SEEE:
+                return SEEE_COOLDOWN;
+
+            default:
+                return 10f;
+        }
+    }
+
+    public float GetCooldownDuration()
+    {
+        if (playerController == null || playerController.characterData == null)
+        {
+            return 1f;
+        }
+
+        SkillType skillType = playerController.characterData.skillType;
+        return GetCooldownBySkillType(skillType);
+    }
+
     public float GetCooldownTimer()
     {
-        return cooldownTimer;
+        return Mathf.Max(0f, currentCooldownDuration - skillCharge);
     }
 
     public bool IsSkillReady()
     {
-        return cooldownTimer <= 0f;
+        return skillCharge >= currentCooldownDuration;
+    }
+
+    public float GetSkillChargeRatio()
+    {
+        if (currentCooldownDuration <= 0f)
+        {
+            currentCooldownDuration = GetCooldownDuration();
+        }
+
+        if (currentCooldownDuration <= 0f)
+        {
+            return 1f;
+        }
+
+        return Mathf.Clamp01(skillCharge / currentCooldownDuration);
     }
 }

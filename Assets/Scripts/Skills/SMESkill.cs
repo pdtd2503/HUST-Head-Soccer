@@ -1,83 +1,124 @@
 using UnityEngine;
 
-public class SMESkill : MonoBehaviour
+public static class SMESkill
 {
-    private const float WALL_DURATION = 2f;
-    private const float WALL_WIDTH = 0.35f;
-    private const float WALL_HEIGHT = 3.5f;
-    private const float WALL_GOAL_OFFSET = 0.55f;
+    private const float WALL_DURATION = 3f;
+    private const float WALL_WIDTH = 0.25f;
+    private const float WALL_IN_FIELD_OFFSET = 0.15f;
 
     private static Sprite whiteSquareSprite;
 
-    public void UseSkill(PlayerController2D playerController, MatchManager matchManager)
+    public static void UseSkill(
+        PlayerController2D playerController,
+        MatchManager matchManager
+    )
     {
-        if (playerController == null || matchManager == null)
+        if (playerController == null)
         {
+            Debug.LogWarning("SME skill failed: missing playerController.");
             return;
         }
 
-        Transform ownGoal = GetOwnGoal(playerController, matchManager);
-
-        if (ownGoal == null)
+        if (matchManager == null)
         {
-            Debug.LogWarning("SME skill could not find own goal.");
+            Debug.LogWarning("SME skill failed: missing matchManager.");
             return;
         }
 
-        Vector3 wallPosition = ownGoal.position;
+        GoalTrigger ownGoalTrigger =
+            GetOwnGoalTrigger(playerController, matchManager);
 
+        if (ownGoalTrigger == null)
+        {
+            Debug.LogWarning("SME skill failed: could not find own goal trigger.");
+            return;
+        }
+
+        BoxCollider2D goalCollider =
+            ownGoalTrigger.GetComponent<BoxCollider2D>();
+
+        if (goalCollider == null)
+        {
+            Debug.LogWarning("SME skill failed: own goal trigger has no BoxCollider2D.");
+            return;
+        }
+
+        Bounds goalBounds = goalCollider.bounds;
+
+        int attackDirection = playerController.GetAttackDirection();
+
+        Vector3 wallPosition = goalBounds.center;
+
+        if (attackDirection > 0)
+        {
+            // Player 1 tấn công sang phải, gôn nhà là bên trái.
+            // Tường đặt ở mép trong của gôn trái, hơi nhô vào sân.
+            wallPosition.x = goalBounds.max.x + WALL_IN_FIELD_OFFSET;
+        }
+        else
+        {
+            // Player 2 tấn công sang trái, gôn nhà là bên phải.
+            // Tường đặt ở mép trong của gôn phải, hơi nhô vào sân.
+            wallPosition.x = goalBounds.min.x - WALL_IN_FIELD_OFFSET;
+        }
+
+        CreateWall(wallPosition, goalBounds.size.y);
+
+        Debug.Log($"{playerController.name} used SME wall skill.");
+    }
+
+    private static GoalTrigger GetOwnGoalTrigger(
+        PlayerController2D playerController,
+        MatchManager matchManager
+    )
+    {
         int attackDirection = playerController.GetAttackDirection();
 
         if (attackDirection > 0)
         {
-            wallPosition.x += WALL_GOAL_OFFSET;
-        }
-        else
-        {
-            wallPosition.x -= WALL_GOAL_OFFSET;
+            return matchManager.leftGoalTrigger;
         }
 
+        return matchManager.rightGoalTrigger;
+    }
+
+    private static void CreateWall(Vector3 position, float height)
+    {
         GameObject wall = new GameObject("SME_GoalWall");
-        wall.transform.position = wallPosition;
-        wall.transform.localScale = new Vector3(WALL_WIDTH, WALL_HEIGHT, 1f);
+
+        wall.transform.position = position;
+        wall.transform.rotation = Quaternion.identity;
+
+        // Kích thước nhìn thấy của tường trong world unit
+        wall.transform.localScale =
+            new Vector3(WALL_WIDTH, height, 1f);
 
         SpriteRenderer spriteRenderer = wall.AddComponent<SpriteRenderer>();
         spriteRenderer.sprite = GetWhiteSquareSprite();
         spriteRenderer.color = new Color(0.55f, 0.55f, 0.55f, 0.85f);
-        spriteRenderer.sortingOrder = 20;
+        spriteRenderer.sortingOrder = 50;
 
         BoxCollider2D wallCollider = wall.AddComponent<BoxCollider2D>();
         wallCollider.isTrigger = false;
 
+        // Vì transform.localScale đã quyết định kích thước thật,
+        // collider để size 1x1 để khớp với sprite.
+        wallCollider.size = Vector2.one;
+
         Rigidbody2D wallRb = wall.AddComponent<Rigidbody2D>();
         wallRb.bodyType = RigidbodyType2D.Static;
 
-        Destroy(wall, WALL_DURATION);
-    }
+        int wallLayer = LayerMask.NameToLayer("Wall");
 
-    private Transform GetOwnGoal(PlayerController2D playerController, MatchManager matchManager)
-    {
-        int attackDirection = playerController.GetAttackDirection();
-
-        if (attackDirection > 0)
+        if (wallLayer >= 0)
         {
-            if (matchManager.leftGoalTrigger == null)
-            {
-                return null;
-            }
-
-            return matchManager.leftGoalTrigger.transform;
+            wall.layer = wallLayer;
         }
 
-        if (matchManager.rightGoalTrigger == null)
-        {
-            return null;
-        }
-
-        return matchManager.rightGoalTrigger.transform;
+        Object.Destroy(wall, WALL_DURATION);
     }
 
-    private Sprite GetWhiteSquareSprite()
+    private static Sprite GetWhiteSquareSprite()
     {
         if (whiteSquareSprite != null)
         {

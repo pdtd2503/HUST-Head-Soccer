@@ -175,7 +175,16 @@ public class MatchManager : MonoBehaviour
         ResetBody(player1, player1Spawn);
         ResetBody(player2, player2Spawn);
 
-        RestoreBallSkillState();
+        if (ballRb != null)
+        {
+            SoictBallStraightShotRuntime straightShotRuntime =
+                ballRb.GetComponent<SoictBallStraightShotRuntime>();
+
+            if (straightShotRuntime != null)
+            {
+                straightShotRuntime.ForceRestoreNormalBall();
+            }
+        }
 
         if (ball != null && ballSpawn != null)
         {
@@ -184,8 +193,6 @@ public class MatchManager : MonoBehaviour
 
         if (ballRb != null)
         {
-            ballRb.bodyType = RigidbodyType2D.Dynamic;
-            ballRb.constraints = RigidbodyConstraints2D.None;
             ballRb.linearVelocity = Vector2.zero;
             ballRb.angularVelocity = 0f;
         }

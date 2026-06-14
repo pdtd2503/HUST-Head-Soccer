@@ -5,7 +5,7 @@ public class CharacterLoader : MonoBehaviour
     public PlayerController2D player1;
     public PlayerController2D player2;
 
-    void Start()
+    private void Start()
     {
         if (player1 == null || player2 == null)
         {
@@ -13,8 +13,15 @@ public class CharacterLoader : MonoBehaviour
             return;
         }
 
-        player1.characterData = GameData.player1Data;
-        player2.characterData = GameData.player2Data;
+        if (GameData.player1Data != null)
+        {
+            player1.characterData = GameData.player1Data;
+        }
+
+        if (GameData.player2Data != null)
+        {
+            player2.characterData = GameData.player2Data;
+        }
 
         player1.isPlayer1 = true;
         player2.isPlayer1 = false;

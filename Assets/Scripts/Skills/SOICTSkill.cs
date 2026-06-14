@@ -1,29 +1,32 @@
 using UnityEngine;
 
-public class SOICTSkill : MonoBehaviour
+public static class SOICTSkill
 {
-    private const float STRAIGHT_SHOT_SPEED = 18f;
+    private const float STRAIGHT_SHOT_SPEED = 22f;
     private const float MAX_STRAIGHT_SHOT_TIME = 1.5f;
 
-    public void UseSkill(PlayerController2D playerController, Rigidbody2D ballRb)
+    public static void UseSkill(
+        PlayerController2D playerController,
+        Rigidbody2D ballRb
+    )
     {
         if (playerController == null || ballRb == null)
         {
             return;
         }
 
-        SoictBallStraightShotRuntime straightShotRuntime =
+        SoictBallStraightShotRuntime runtime =
             ballRb.GetComponent<SoictBallStraightShotRuntime>();
 
-        if (straightShotRuntime == null)
+        if (runtime == null)
         {
-            straightShotRuntime =
+            runtime =
                 ballRb.gameObject.AddComponent<SoictBallStraightShotRuntime>();
         }
 
         int attackDirection = playerController.GetAttackDirection();
 
-        straightShotRuntime.ActivateStraightShot(
+        runtime.ActivateStraightShot(
             attackDirection,
             STRAIGHT_SHOT_SPEED,
             MAX_STRAIGHT_SHOT_TIME
@@ -66,7 +69,11 @@ public class SoictBallStraightShotRuntime : MonoBehaviour
         }
     }
 
-    public void ActivateStraightShot(int direction, float speed, float maxDuration)
+    public void ActivateStraightShot(
+        int direction,
+        float speed,
+        float maxDuration
+    )
     {
         if (rb == null)
         {
@@ -99,21 +106,21 @@ public class SoictBallStraightShotRuntime : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (!isStraightShotActive)
+        {
+            return;
+        }
+
         RestoreNormalBall();
     }
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        RestoreNormalBall();
-    }
+        if (!isStraightShotActive)
+        {
+            return;
+        }
 
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        RestoreNormalBall();
-    }
-
-    private void OnTriggerStay2D(Collider2D other)
-    {
         RestoreNormalBall();
     }
 

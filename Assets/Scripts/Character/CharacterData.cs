@@ -25,10 +25,13 @@ public class CharacterData : ScriptableObject
     public Sprite footLeftSprite;
 
     [Header("Stats")]
-    [Range(1, 5)] public int jumpStars = 3;
-    [Range(1, 5)] public int speedStars = 3;
-    [Range(1, 5)] public int massStars = 3;
+    [Range(1, 5)] public int jumpStars;
+    [Range(1, 5)] public int speedStars;
+    [Range(1, 5)] public int massStars;
 
     [Header("Skill")]
     public SkillType skillType;
+
+    [TextArea]
+    public string skillDescription;
 }

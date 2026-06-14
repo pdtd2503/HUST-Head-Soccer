@@ -1,12 +1,12 @@
 using System.Collections;
 using UnityEngine;
 
-public class SCLSSkill : MonoBehaviour
+public static class SCLSSkill
 {
     private const float SHRINK_SCALE_MULTIPLIER = 0.5f;
     private const float SHRINK_DURATION = 4f;
 
-    public void UseSkill(PlayerController2D opponentController)
+    public static void UseSkill(PlayerController2D opponentController)
     {
         if (opponentController == null)
         {
@@ -14,19 +14,23 @@ public class SCLSSkill : MonoBehaviour
             return;
         }
 
-        SclsShrinkRuntime shrinkRuntime =
+        SclsShrinkRuntime runtime =
             opponentController.GetComponent<SclsShrinkRuntime>();
 
-        if (shrinkRuntime == null)
+        if (runtime == null)
         {
-            shrinkRuntime = opponentController.gameObject.AddComponent<SclsShrinkRuntime>();
+            runtime =
+                opponentController.gameObject.AddComponent<SclsShrinkRuntime>();
         }
 
-        shrinkRuntime.ApplyShrink(SHRINK_SCALE_MULTIPLIER, SHRINK_DURATION);
+        runtime.ApplyShrink(
+            SHRINK_SCALE_MULTIPLIER,
+            SHRINK_DURATION
+        );
     }
 }
 
-class SclsShrinkRuntime : MonoBehaviour
+public class SclsShrinkRuntime : MonoBehaviour
 {
     private Coroutine shrinkCoroutine;
 
@@ -46,7 +50,8 @@ class SclsShrinkRuntime : MonoBehaviour
             StopCoroutine(shrinkCoroutine);
         }
 
-        shrinkCoroutine = StartCoroutine(ShrinkRoutine(scaleMultiplier, duration));
+        shrinkCoroutine =
+            StartCoroutine(ShrinkRoutine(scaleMultiplier, duration));
     }
 
     private IEnumerator ShrinkRoutine(float scaleMultiplier, float duration)
@@ -65,13 +70,15 @@ class SclsShrinkRuntime : MonoBehaviour
 
     private void OnDisable()
     {
-        if (hasOriginalScale)
-        {
-            transform.localScale = originalScale;
-        }
+        RestoreOriginalScale();
     }
 
     private void OnDestroy()
+    {
+        RestoreOriginalScale();
+    }
+
+    private void RestoreOriginalScale()
     {
         if (hasOriginalScale)
         {

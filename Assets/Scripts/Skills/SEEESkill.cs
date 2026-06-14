@@ -1,10 +1,13 @@
 using UnityEngine;
 
-public class SEEESkill : MonoBehaviour
+public static class SEEESkill
 {
     private const float BALL_OFFSET = 0.75f;
 
-    public void UseSkill(PlayerController2D playerController, Transform ball)
+    public static void UseSkill(
+        PlayerController2D playerController,
+        Transform ball
+    )
     {
         if (playerController == null || ball == null)
         {
@@ -14,6 +17,7 @@ public class SEEESkill : MonoBehaviour
         int attackDirection = playerController.GetAttackDirection();
 
         Vector3 targetPosition = playerController.transform.position;
+
         targetPosition.x = ball.position.x - attackDirection * BALL_OFFSET;
         targetPosition.y = ball.position.y;
 

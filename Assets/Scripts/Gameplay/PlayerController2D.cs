@@ -1,12 +1,11 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController2D : MonoBehaviour
 {
     [Header("Character Data")]
     public CharacterData characterData;
 
-    [Tooltip("Player 1 tấn công sang phải, Player 2 tấn công sang trái.")]
+    [Tooltip("Player 1 tấn công sang phải, Player 2 tấn công sang trái")]
     public bool isPlayer1 = true;
 
     [Header("Character Visual")]
@@ -18,21 +17,17 @@ public class PlayerController2D : MonoBehaviour
     public KeyCode rightKey;
     public KeyCode jumpKey;
 
-    [Header("Jump Calibration")]
-    [Tooltip("Vị trí Y của tâm player khi đang đứng trên mặt đất. Nếu đầu đường kính 1 và tâm ở y = 0.5 thì để 0.5.")]
-    [SerializeField] private float standingCenterY = 0.5f;
-
-    [Tooltip("Khoảng cách từ tâm player tới đỉnh đầu. Nếu đầu đường kính 1 thì để 0.5.")]
-    [SerializeField] private float centerToHeadTop = 0.5f;
-
-    [Header("Runtime Debug")]
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private float jumpVelocity;
-    [SerializeField] private bool isGrounded;
+    [Header("Runtime Tuning")]
+    public float moveMultiplier = 1f;
+    public float jumpForceMultiplier = 1f;
 
     private Rigidbody2D rb;
+
+    private bool isGrounded;
     private float moveInput;
-    private float baseMoveSpeed;
+
+    private float moveSpeed;
+    private float jumpForce;
 
     private void Awake()
     {
@@ -52,7 +47,8 @@ public class PlayerController2D : MonoBehaviour
 
     private void FixedUpdate()
     {
-        ApplyMovement();
+        rb.linearVelocity =
+            new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
     }
 
     public void ApplyCharacterData()
@@ -64,15 +60,29 @@ public class PlayerController2D : MonoBehaviour
         }
 
         ApplyCharacterVisual();
-        ApplySpeedFromStars(characterData.speedStars);
-        ApplyJumpFromStars(characterData.jumpStars);
-        ApplyMassFromStars(characterData.massStars);
+
+        float designSpeed =
+            CharacterStats.GetSpeed(characterData.speedStars);
+
+        float jumpReach =
+            CharacterStats.GetJumpReach(characterData.jumpStars);
+
+        float mass =
+            CharacterStats.GetMass(characterData.massStars);
+
+        moveSpeed = designSpeed * moveMultiplier;
+
+        float jumpCenterHeight = jumpReach - 1f;
+        float gravity = Mathf.Abs(Physics2D.gravity.y * rb.gravityScale);
+
+        jumpForce =
+            Mathf.Sqrt(2f * gravity * jumpCenterHeight)
+            * jumpForceMultiplier;
+
+        rb.mass = mass;
 
         Debug.Log(
-            $"{name} applied: " +
-            $"Speed={moveSpeed}, " +
-            $"JumpVelocity={jumpVelocity}, " +
-            $"Mass={rb.mass}"
+            $"{name} applied: Speed={moveSpeed}, Jump={jumpForce}, Mass={mass}"
         );
     }
 
@@ -109,34 +119,6 @@ public class PlayerController2D : MonoBehaviour
         }
     }
 
-    private void ApplySpeedFromStars(int speedStars)
-    {
-        baseMoveSpeed = CharacterStats.GetSpeed(speedStars);
-        moveSpeed = baseMoveSpeed;
-    }
-
-    private void ApplyJumpFromStars(int jumpStars)
-    {
-        float headReach = CharacterStats.GetJumpHeadReach(jumpStars);
-
-        float targetCenterY = headReach - centerToHeadTop;
-        float jumpHeight = targetCenterY - standingCenterY;
-
-        if (jumpHeight <= 0f)
-        {
-            jumpVelocity = 0f;
-            return;
-        }
-
-        float gravity = Mathf.Abs(Physics2D.gravity.y * rb.gravityScale);
-        jumpVelocity = Mathf.Sqrt(2f * gravity * jumpHeight);
-    }
-
-    private void ApplyMassFromStars(int massStars)
-    {
-        rb.mass = CharacterStats.GetMass(massStars);
-    }
-
     private void ReadMoveInput()
     {
         moveInput = 0f;
@@ -151,36 +133,15 @@ public class PlayerController2D : MonoBehaviour
         }
     }
 
-    private void ApplyMovement()
-    {
-        rb.linearVelocity = new Vector2(
-            moveInput * moveSpeed,
-            rb.linearVelocity.y
-        );
-    }
-
     private void ReadJumpInput()
     {
-        if (!Input.GetKeyDown(jumpKey))
+        if (Input.GetKeyDown(jumpKey) && isGrounded)
         {
-            return;
+            rb.linearVelocity =
+                new Vector2(rb.linearVelocity.x, jumpForce);
+
+            isGrounded = false;
         }
-
-        if (!isGrounded)
-        {
-            return;
-        }
-
-        Jump();
-        isGrounded = false;
-    }
-
-    private void Jump()
-    {
-        rb.linearVelocity = new Vector2(
-            rb.linearVelocity.x,
-            jumpVelocity
-        );
     }
 
     private void OnCollisionStay2D(Collision2D collision)
@@ -210,33 +171,13 @@ public class PlayerController2D : MonoBehaviour
         }
     }
 
-    public int GetAttackDirection()
-    {
-        if (isPlayer1)
-        {
-            return 1;
-        }
-
-        return -1;
-    }
-
     public Rigidbody2D GetBody()
     {
         return rb;
     }
 
-    public float GetMoveSpeed()
+    public int GetAttackDirection()
     {
-        return moveSpeed;
-    }
-
-    public float GetJumpVelocity()
-    {
-        return jumpVelocity;
-    }
-
-    public float GetMass()
-    {
-        return rb.mass;
+        return isPlayer1 ? 1 : -1;
     }
 }
