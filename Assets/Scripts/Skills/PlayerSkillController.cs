@@ -12,6 +12,14 @@ public class PlayerSkillController : MonoBehaviour
     [SerializeField] private Transform ball;
     [SerializeField] private Rigidbody2D ballRb;
 
+    [Header("Cooldown Settings")]
+    [SerializeField] private float soictCooldown = 10f;
+    [SerializeField] private float smeCooldown = 12f;
+    [SerializeField] private float sclsCooldown = 14f;
+    [SerializeField] private float seeeCooldown = 8f;
+
+    private float cooldownTimer;
+
     private SOICTSkill soictSkill;
     private SMESkill smeSkill;
     private SCLSSkill sclsSkill;
@@ -25,6 +33,8 @@ public class PlayerSkillController : MonoBehaviour
 
     private void Update()
     {
+        UpdateCooldown();
+
         if (!Input.GetKeyDown(skillKey))
         {
             return;
@@ -36,7 +46,51 @@ public class PlayerSkillController : MonoBehaviour
         }
 
         RefreshBallReferenceIfNeeded();
-        UseSkill(playerController.characterData.skillType);
+
+        SkillType skillType = playerController.characterData.skillType;
+        UseSkill(skillType);
+        StartCooldown(skillType);
+    }
+
+    private void UpdateCooldown()
+    {
+        if (cooldownTimer <= 0f)
+        {
+            return;
+        }
+
+        cooldownTimer -= Time.deltaTime;
+
+        if (cooldownTimer < 0f)
+        {
+            cooldownTimer = 0f;
+        }
+    }
+
+    private void StartCooldown(SkillType skillType)
+    {
+        cooldownTimer = GetCooldownBySkillType(skillType);
+    }
+
+    private float GetCooldownBySkillType(SkillType skillType)
+    {
+        switch (skillType)
+        {
+            case SkillType.SOICT:
+                return soictCooldown;
+
+            case SkillType.SME:
+                return smeCooldown;
+
+            case SkillType.SCLS:
+                return sclsCooldown;
+
+            case SkillType.SEEE:
+                return seeeCooldown;
+
+            default:
+                return 10f;
+        }
     }
 
     private void ResolveReferences()
@@ -57,6 +111,12 @@ public class PlayerSkillController : MonoBehaviour
 
     private bool CanUseSkill()
     {
+        if (cooldownTimer > 0f)
+        {
+            Debug.Log($"{name} skill is cooling down: {cooldownTimer:F1}s left.");
+            return false;
+        }
+
         if (matchManager != null && !matchManager.CanUsePlayerActions())
         {
             return false;
@@ -162,5 +222,15 @@ public class PlayerSkillController : MonoBehaviour
                 Debug.LogWarning($"Unhandled skill type: {skillType}");
                 break;
         }
+    }
+
+    public float GetCooldownTimer()
+    {
+        return cooldownTimer;
+    }
+
+    public bool IsSkillReady()
+    {
+        return cooldownTimer <= 0f;
     }
 }

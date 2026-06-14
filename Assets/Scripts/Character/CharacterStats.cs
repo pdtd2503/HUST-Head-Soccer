@@ -1,54 +1,39 @@
+using UnityEngine;
+
 public static class CharacterStats
 {
-    public static float GetJumpReach(int stars)
-    {
-        return stars switch
-        {
-            1 => 1.50f,
-            2 => 1.75f,
-            3 => 2.00f,
-            4 => 2.25f,
-            5 => 2.50f,
-            _ => 2.00f
-        };
-    }
+    private const int MIN_STARS = 1;
+    private const int MAX_STARS = 5;
+
+    private const float MIN_SPEED = 3.0f;
+    private const float SPEED_STEP = 0.5f;
+
+    private const float MIN_HEAD_REACH = 2.0f;
+    private const float HEAD_REACH_STEP = 0.25f;
+
+    private const float MIN_MASS = 10.0f;
+    private const float MASS_STEP = 5.0f;
 
     public static float GetSpeed(int stars)
     {
-        return stars switch
-        {
-            1 => 2.00f,
-            2 => 2.50f,
-            3 => 3.00f,
-            4 => 3.50f,
-            5 => 4.00f,
-            _ => 3.00f
-        };
+        int clampedStars = ClampStars(stars);
+        return MIN_SPEED + (clampedStars - 1) * SPEED_STEP;
     }
 
-    public static float GetKickSpeed(int stars)
+    public static float GetJumpHeadReach(int stars)
     {
-        return stars switch
-        {
-            1 => 2.00f,
-            2 => 2.50f,
-            3 => 3.00f,
-            4 => 3.50f,
-            5 => 4.00f,
-            _ => 3.00f
-        };
+        int clampedStars = ClampStars(stars);
+        return MIN_HEAD_REACH + (clampedStars - 1) * HEAD_REACH_STEP;
     }
 
     public static float GetMass(int stars)
     {
-        return stars switch
-        {
-            1 => 1.00f,
-            2 => 1.50f,
-            3 => 2.00f,
-            4 => 2.50f,
-            5 => 3.00f,
-            _ => 2.00f
-        };
+        int clampedStars = ClampStars(stars);
+        return MIN_MASS + (clampedStars - 1) * MASS_STEP;
+    }
+
+    private static int ClampStars(int stars)
+    {
+        return Mathf.Clamp(stars, MIN_STARS, MAX_STARS);
     }
 }
