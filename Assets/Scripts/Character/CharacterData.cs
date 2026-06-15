@@ -14,7 +14,12 @@ public enum SkillType
 )]
 public class CharacterData : ScriptableObject
 {
+    [Header("Basic Info")]
     public string characterName;
+    public string skillDisplayName;
+
+    [TextArea(2, 4)]
+    public string skillDescription;
 
     [Header("Head Sprites")]
     public Sprite headRightSprite;

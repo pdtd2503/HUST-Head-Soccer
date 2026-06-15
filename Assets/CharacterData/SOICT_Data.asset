@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c59cbd4f45a87ba44bac99016308e0d2, type: 3}
   m_Name: SOICT_Data
   m_EditorClassIdentifier: Assembly-CSharp::CharacterData
-  characterName: 
+  characterName: SOICT
+  skillDisplayName: Power Shot
+  skillDescription: Launch a powerful straight shot toward the opponent's goal
   headRightSprite: {fileID: 21300000, guid: f9a393584c8acce4493e2451bbd786b0, type: 3}
   headLeftSprite: {fileID: 21300000, guid: 77089516d1d960a40ac7054dff844024, type: 3}
   footRightSprite: {fileID: 21300000, guid: 1973ac0954dbb5840ba337822400b5ef, type: 3}

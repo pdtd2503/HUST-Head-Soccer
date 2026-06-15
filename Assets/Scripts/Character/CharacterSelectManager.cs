@@ -4,15 +4,20 @@ using UnityEngine.SceneManagement;
 
 public class CharacterSelectManager : MonoBehaviour
 {
+    [Header("Selection Labels")]
     public TMP_Text seeeLabel;
     public TMP_Text sclsLabel;
     public TMP_Text smeLabel;
     public TMP_Text soictLabel;
 
+    [Header("Character Data")]
     public CharacterData seeeData;
     public CharacterData sclsData;
     public CharacterData smeData;
     public CharacterData soictData;
+
+    [Header("Info Panel")]
+    public CharacterInfoPanelUI infoPanelUI;
 
     private bool choosingPlayer1 = true;
 
@@ -35,6 +40,12 @@ public class CharacterSelectManager : MonoBehaviour
         {
             Debug.LogWarning($"No CharacterData found for {characterName}");
             return;
+        }
+
+        // Hiển thị thông tin nhân vật lên panel
+        if (infoPanelUI != null)
+        {
+            infoPanelUI.ShowCharacter(selectedData);
         }
 
         if (choosingPlayer1)
@@ -133,6 +144,12 @@ public class CharacterSelectManager : MonoBehaviour
         ClearLabel(sclsLabel);
         ClearLabel(smeLabel);
         ClearLabel(soictLabel);
+
+        // Reset lại panel thông tin
+        if (infoPanelUI != null)
+        {
+            infoPanelUI.ShowEmpty();
+        }
 
         Debug.Log("Selection reset.");
     }

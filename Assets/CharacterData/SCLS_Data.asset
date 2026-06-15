@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c59cbd4f45a87ba44bac99016308e0d2, type: 3}
   m_Name: SCLS_Data
   m_EditorClassIdentifier: Assembly-CSharp::CharacterData
-  characterName: 
+  characterName: SCLS
+  skillDisplayName: Shrink
+  skillDescription: Shrink the opponent for a short time
   headRightSprite: {fileID: 21300000, guid: 2af2d04847c6ca4449444a4e2592d41a, type: 3}
   headLeftSprite: {fileID: 21300000, guid: 2f744933570d5cf4192e44beaad985ff, type: 3}
   footRightSprite: {fileID: 21300000, guid: 1973ac0954dbb5840ba337822400b5ef, type: 3}
