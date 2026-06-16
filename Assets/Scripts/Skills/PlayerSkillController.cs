@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerSkillController : MonoBehaviour
 {
-    private const KeyCode PLAYER_1_SKILL_KEY = KeyCode.LeftShift;
+    private const KeyCode PLAYER_1_SKILL_KEY = KeyCode.V;
     private const KeyCode PLAYER_2_SKILL_KEY = KeyCode.O;
 
     private const float SOICT_COOLDOWN = 10f;

@@ -21,6 +21,10 @@ public class PlayerController2D : MonoBehaviour
     public float moveMultiplier = 1f;
     public float jumpForceMultiplier = 1f;
 
+    [Header("Map Modifier")]
+    public float mapSpeedMultiplier = 1f;
+    public float mapJumpMultiplier = 1f;
+
     private Rigidbody2D rb;
 
     private bool isGrounded;
@@ -47,8 +51,13 @@ public class PlayerController2D : MonoBehaviour
 
     private void FixedUpdate()
     {
+        float finalSpeed =
+            moveInput * moveSpeed
+            + WindManager.CurrentWind;
+
         rb.linearVelocity =
-            new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
+            new Vector2(finalSpeed,
+                        rb.linearVelocity.y);
     }
 
     public void ApplyCharacterData()
@@ -65,12 +74,16 @@ public class PlayerController2D : MonoBehaviour
             CharacterStats.GetSpeed(characterData.speedStars);
 
         float jumpReach =
-            CharacterStats.GetJumpReach(characterData.jumpStars);
+            CharacterStats.GetJumpReach(characterData.jumpStars)
+            * mapJumpMultiplier;
 
         float mass =
             CharacterStats.GetMass(characterData.massStars);
 
-        moveSpeed = designSpeed * moveMultiplier;
+        moveSpeed =
+            designSpeed
+            * moveMultiplier
+            * mapSpeedMultiplier;
 
         float jumpCenterHeight = jumpReach - 1f;
         float gravity = Mathf.Abs(Physics2D.gravity.y * rb.gravityScale);

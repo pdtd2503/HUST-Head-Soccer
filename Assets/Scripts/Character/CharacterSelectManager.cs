@@ -257,6 +257,6 @@ public class CharacterSelectManager : MonoBehaviour
             return;
         }
 
-        SceneManager.LoadScene("Prototype_Level");
+        SceneManager.LoadScene("MapSelect");
     }
 }
