@@ -1018,13 +1018,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 567130918}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0.6, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.7, z: 1}
+  m_LocalRotation: {x: 0, y: 0, z: -0.13052624, w: 0.9914449}
+  m_LocalPosition: {x: -0.3, y: -0.7, z: 0}
+  m_LocalScale: {x: 0.2, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1837662740}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -15}
 --- !u!61 &567130921
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1114,7 +1114,7 @@ MonoBehaviour:
   player: {fileID: 0}
   kickDirection: 1
   startLocalPosition: {x: -0.3, y: -0.7}
-  endLocalPosition: {x: 0.6, y: -0.15}
+  endLocalPosition: {x: 0.6, y: -0.3}
   startAngle: -15
   endAngle: 90
   swingTime: 0.2
@@ -1334,7 +1334,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 626534590}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -1472,7 +1472,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 645376324}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -3819,7 +3819,6 @@ GameObject:
   - component: {fileID: 1837662740}
   - component: {fileID: 1837662737}
   - component: {fileID: 1837662738}
-  - component: {fileID: 1837662743}
   - component: {fileID: 1837662741}
   - component: {fileID: 1837662742}
   m_Layer: 6
@@ -3890,7 +3889,7 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.25}
+  m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
 --- !u!4 &1837662740
 Transform:
@@ -3930,10 +3929,6 @@ MonoBehaviour:
   jumpKey: 119
   moveMultiplier: 1
   jumpForceMultiplier: 1
-  preventBounceFromBall: 1
-  ballTag: Ball
-  ballTopContactNormalY: 0.5
-  maxUpwardSpeedFromBall: 0
 --- !u!114 &1837662742
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3946,52 +3941,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc1311d1a20691240a6ec8bdf2f80d6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSkillController
---- !u!61 &1837662743
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1837662735}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 6200000, guid: 0b4cae09ab81ae74f807d21901635cbb, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 1, y: 0.5}
-  m_EdgeRadius: 0
 --- !u!1 &1880900649
 GameObject:
   m_ObjectHideFlags: 0
@@ -4053,7 +4002,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.13052616, w: 0.9914449}
   m_LocalPosition: {x: 0.3, y: -0.7, z: 0}
-  m_LocalScale: {x: 0.20000002, y: 0.7, z: 1}
+  m_LocalScale: {x: 0.20000002, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2087302477}
@@ -4147,7 +4096,7 @@ MonoBehaviour:
   player: {fileID: 0}
   kickDirection: 1
   startLocalPosition: {x: 0.3, y: -0.7}
-  endLocalPosition: {x: -0.6, y: -0.15}
+  endLocalPosition: {x: -0.6, y: -0.3}
   startAngle: 15
   endAngle: -90
   swingTime: 0.2
@@ -4368,7 +4317,6 @@ GameObject:
   - component: {fileID: 2087302477}
   - component: {fileID: 2087302475}
   - component: {fileID: 2087302474}
-  - component: {fileID: 2087302480}
   - component: {fileID: 2087302478}
   - component: {fileID: 2087302479}
   m_Layer: 6
@@ -4412,7 +4360,7 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.25}
+  m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
 --- !u!50 &2087302475
 Rigidbody2D:
@@ -4479,10 +4427,6 @@ MonoBehaviour:
   jumpKey: 273
   moveMultiplier: 1
   jumpForceMultiplier: 1
-  preventBounceFromBall: 1
-  ballTag: Ball
-  ballTopContactNormalY: 0.5
-  maxUpwardSpeedFromBall: 0
 --- !u!114 &2087302479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4495,52 +4439,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc1311d1a20691240a6ec8bdf2f80d6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSkillController
---- !u!61 &2087302480
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2087302472}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 6200000, guid: 0b4cae09ab81ae74f807d21901635cbb, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 1, y: 0.5}
-  m_EdgeRadius: 0
 --- !u!1 &2135521384
 GameObject:
   m_ObjectHideFlags: 0
@@ -4613,7 +4511,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2135521384}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
