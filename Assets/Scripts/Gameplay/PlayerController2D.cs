@@ -30,6 +30,8 @@ public class PlayerController2D : MonoBehaviour
     private bool isGrounded;
     private float moveInput;
 
+    private bool isStunned = false;
+
     private float moveSpeed;
     private float jumpForce;
 
@@ -45,6 +47,12 @@ public class PlayerController2D : MonoBehaviour
 
     private void Update()
     {
+        if (isStunned)
+        {
+            moveInput = 0f;
+            return;
+        }
+
         ReadMoveInput();
         ReadJumpInput();
     }
@@ -193,4 +201,27 @@ public class PlayerController2D : MonoBehaviour
     {
         return isPlayer1 ? 1 : -1;
     }
+    public void Stun(float duration)
+{
+    StopAllCoroutines();
+
+    StartCoroutine(
+        StunRoutine(duration)
+    );
+}
+
+private System.Collections.IEnumerator
+StunRoutine(float duration)
+{
+    isStunned = true;
+
+    rb.linearVelocity =
+        Vector2.zero;
+
+    yield return new WaitForSeconds(
+        duration
+    );
+
+    isStunned = false;
+}
 }
