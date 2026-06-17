@@ -21,9 +21,28 @@ public class PlayerController2D : MonoBehaviour
     public float moveMultiplier = 1f;
     public float jumpForceMultiplier = 1f;
 
-    [Header("Map Modifier")]
-    public float mapSpeedMultiplier = 1f;
-    public float mapJumpMultiplier = 1f;
+    [Header("Ball Contact Fix")]
+    [Tooltip("Chặn player bị bóng đẩy nảy lên khi player đang ở phía trên bóng.")]
+    [SerializeField] private bool preventBounceFromBall = true;
+
+    [Tooltip("Tag của quả bóng trong scene.")]
+    [SerializeField] private string ballTag = "Ball";
+
+    [Tooltip("Contact normal càng gần 1 thì càng chắc chắn bóng đang ở dưới player.")]
+    [SerializeField] private float ballTopContactNormalY = 0.5f;
+
+    [Tooltip("Vận tốc Y dương tối đa được giữ lại khi player chạm phía trên bóng.")]
+    [SerializeField] private float maxUpwardSpeedFromBall = 0f;
+
+    [Header("Anti Ball Launch")]
+    [Tooltip("Giới hạn vận tốc bay lên khi player bị bóng hất sau va chạm mạnh.")]
+    [SerializeField] private bool limitBallLaunch = true;
+
+    [Tooltip("Vận tốc Y dương tối đa khi player bị bóng hất lên. Không nên để 0 vì sẽ làm cảm giác quá cứng.")]
+    [SerializeField] private float maxBallLaunchUpSpeed = 1.5f;
+
+    [Tooltip("Sau khi player tự bấm nhảy, bỏ qua chống hất trong khoảng thời gian này để cú nhảy vẫn tự nhiên.")]
+    [SerializeField] private float jumpIgnoreDuration = 0.25f;
 
     private Rigidbody2D rb;
 
@@ -32,6 +51,8 @@ public class PlayerController2D : MonoBehaviour
 
     private float moveSpeed;
     private float jumpForce;
+
+    private float lastJumpTime = -999f;
 
     private void Awake()
     {
@@ -51,13 +72,8 @@ public class PlayerController2D : MonoBehaviour
 
     private void FixedUpdate()
     {
-        float finalSpeed =
-            moveInput * moveSpeed
-            + WindManager.CurrentWind;
-
         rb.linearVelocity =
-            new Vector2(finalSpeed,
-                        rb.linearVelocity.y);
+            new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
     }
 
     public void ApplyCharacterData()
@@ -74,16 +90,12 @@ public class PlayerController2D : MonoBehaviour
             CharacterStats.GetSpeed(characterData.speedStars);
 
         float jumpReach =
-            CharacterStats.GetJumpReach(characterData.jumpStars)
-            * mapJumpMultiplier;
+            CharacterStats.GetJumpReach(characterData.jumpStars);
 
         float mass =
             CharacterStats.GetMass(characterData.massStars);
 
-        moveSpeed =
-            designSpeed
-            * moveMultiplier
-            * mapSpeedMultiplier;
+        moveSpeed = designSpeed * moveMultiplier;
 
         float jumpCenterHeight = jumpReach - 1f;
         float gravity = Mathf.Abs(Physics2D.gravity.y * rb.gravityScale);
@@ -153,11 +165,23 @@ public class PlayerController2D : MonoBehaviour
             rb.linearVelocity =
                 new Vector2(rb.linearVelocity.x, jumpForce);
 
+            lastJumpTime = Time.time;
             isGrounded = false;
         }
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        HandleBallCollision(collision);
+    }
+
     private void OnCollisionStay2D(Collision2D collision)
+    {
+        CheckGroundContact(collision);
+        HandleBallCollision(collision);
+    }
+
+    private void CheckGroundContact(Collision2D collision)
     {
         if (!collision.collider.CompareTag("Ground"))
         {
@@ -173,6 +197,73 @@ public class PlayerController2D : MonoBehaviour
                 isGrounded = true;
                 return;
             }
+        }
+    }
+
+    private void HandleBallCollision(Collision2D collision)
+    {
+        if (!collision.collider.CompareTag(ballTag))
+        {
+            return;
+        }
+
+        PreventBounceFromBall(collision);
+        LimitBallLaunch(collision);
+    }
+
+    private void PreventBounceFromBall(Collision2D collision)
+    {
+        if (!preventBounceFromBall)
+        {
+            return;
+        }
+
+        bool playerIsAboveBall =
+            transform.position.y > collision.transform.position.y;
+
+        if (!playerIsAboveBall)
+        {
+            return;
+        }
+
+        for (int i = 0; i < collision.contactCount; i++)
+        {
+            ContactPoint2D contact = collision.GetContact(i);
+
+            if (contact.normal.y > ballTopContactNormalY &&
+                rb.linearVelocity.y > maxUpwardSpeedFromBall)
+            {
+                rb.linearVelocity = new Vector2(
+                    rb.linearVelocity.x,
+                    maxUpwardSpeedFromBall
+                );
+
+                return;
+            }
+        }
+    }
+
+    private void LimitBallLaunch(Collision2D collision)
+    {
+        if (!limitBallLaunch)
+        {
+            return;
+        }
+
+        bool justJumped =
+            Time.time - lastJumpTime <= jumpIgnoreDuration;
+
+        if (justJumped)
+        {
+            return;
+        }
+
+        if (rb.linearVelocity.y > maxBallLaunchUpSpeed)
+        {
+            rb.linearVelocity = new Vector2(
+                rb.linearVelocity.x,
+                maxBallLaunchUpSpeed
+            );
         }
     }
 
