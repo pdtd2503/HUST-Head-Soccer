@@ -4170,6 +4170,9 @@ MonoBehaviour:
   limitBallLaunch: 1
   maxBallLaunchUpSpeed: 1.5
   jumpIgnoreDuration: 0.25
+  useMassStarPush: 1
+  pushSpeedPerMassStar: 2
+  pushDuration: 0.08
 --- !u!58 &1275997952
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -4630,7 +4633,7 @@ MonoBehaviour:
   leftX: -8
   rightX: 8
   spawnY: 6
-  interval: 2
+  interval: 2.5
 --- !u!4 &1392958120
 Transform:
   m_ObjectHideFlags: 0
@@ -5301,6 +5304,9 @@ MonoBehaviour:
   limitBallLaunch: 1
   maxBallLaunchUpSpeed: 1.5
   jumpIgnoreDuration: 0.25
+  useMassStarPush: 1
+  pushSpeedPerMassStar: 2
+  pushDuration: 0.08
 --- !u!58 &1972683836
 CircleCollider2D:
   m_ObjectHideFlags: 0
