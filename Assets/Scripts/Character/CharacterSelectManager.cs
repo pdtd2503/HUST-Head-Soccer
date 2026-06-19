@@ -257,6 +257,26 @@ public class CharacterSelectManager : MonoBehaviour
             return;
         }
 
+        if (GameSessionManager.Instance != null &&
+            GameSessionManager.Instance.currentGameMode == GameMode.Tournament)
+        {
+            string randomMapScene =
+                GameSessionManager.Instance.GetRandomTournamentMap();
+
+            if (string.IsNullOrWhiteSpace(randomMapScene))
+            {
+                Debug.LogError("Cannot start tournament match because map scene is empty.");
+                return;
+            }
+
+            GameData.selectedMap = randomMapScene;
+
+            Debug.Log("Tournament Match 1 map: " + randomMapScene);
+
+            SceneManager.LoadScene(randomMapScene);
+            return;
+        }
+
         SceneManager.LoadScene("MapSelect");
     }
 }

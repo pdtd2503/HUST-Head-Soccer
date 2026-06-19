@@ -44,11 +44,20 @@ public class PlayerController2D : MonoBehaviour
     [Tooltip("Sau khi player tự bấm nhảy, bỏ qua chống hất trong khoảng thời gian này để cú nhảy vẫn tự nhiên.")]
     [SerializeField] private float jumpIgnoreDuration = 0.25f;
 
+    [Header("Player Collision Push")]
+    [SerializeField] private bool useMassStarPush = true;
+
+    [Tooltip("Chênh 1 sao mass thì player nhẹ hơn bị đẩy thêm bao nhiêu unit/s.")]
+    [SerializeField] private float pushSpeedPerMassStar = 2f;
+
+    [Tooltip("Thời gian giữ lực đẩy sau va chạm player-player.")]
+    [SerializeField] private float pushDuration = 0.08f;
+
     private Rigidbody2D rb;
 
     private bool isGrounded;
     private float moveInput;
-
+    private MatchManager matchManager;
     private bool isStunned = false;
 
     private float moveSpeed;
@@ -56,9 +65,13 @@ public class PlayerController2D : MonoBehaviour
 
     private float lastJumpTime = -999f;
 
+    private float playerPushVelocityX;
+    private float playerPushTimer;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        matchManager = FindFirstObjectByType<MatchManager>();
     }
 
     private void Start()
@@ -68,6 +81,12 @@ public class PlayerController2D : MonoBehaviour
 
     private void Update()
     {
+        if (!CanAct())
+        {
+            moveInput = 0f;
+            return;
+        }
+
         if (isStunned)
         {
             moveInput = 0f;
@@ -80,8 +99,42 @@ public class PlayerController2D : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!CanAct())
+        {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
+        if (isStunned)
+        {
+            rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+            return;
+        }
+
+        UpdatePlayerPushTimer();
+
+        float targetVelocityX =
+            moveInput * moveSpeed + playerPushVelocityX;
+
         rb.linearVelocity =
-            new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
+            new Vector2(targetVelocityX, rb.linearVelocity.y);
+    }
+
+    private bool CanAct()
+    {
+        return matchManager == null || matchManager.CanUsePlayerActions();
+    }
+
+    private void UpdatePlayerPushTimer()
+    {
+        if (playerPushTimer > 0f)
+        {
+            playerPushTimer -= Time.fixedDeltaTime;
+        }
+        else
+        {
+            playerPushVelocityX = 0f;
+        }
     }
 
     public void ApplyCharacterData()
@@ -180,13 +233,16 @@ public class PlayerController2D : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        CheckGroundContact(collision);
         HandleBallCollision(collision);
+        HandlePlayerMassPush(collision);
     }
 
     private void OnCollisionStay2D(Collision2D collision)
     {
         CheckGroundContact(collision);
         HandleBallCollision(collision);
+        HandlePlayerMassPush(collision);
     }
 
     private void CheckGroundContact(Collision2D collision)
@@ -222,6 +278,14 @@ public class PlayerController2D : MonoBehaviour
     private void PreventBounceFromBall(Collision2D collision)
     {
         if (!preventBounceFromBall)
+        {
+            return;
+        }
+
+        bool justJumped =
+            Time.time - lastJumpTime <= jumpIgnoreDuration;
+
+        if (justJumped)
         {
             return;
         }
@@ -275,6 +339,53 @@ public class PlayerController2D : MonoBehaviour
         }
     }
 
+    private void HandlePlayerMassPush(Collision2D collision)
+    {
+        if (!useMassStarPush)
+        {
+            return;
+        }
+
+        PlayerController2D otherPlayer =
+            collision.collider.GetComponentInParent<PlayerController2D>();
+
+        if (otherPlayer == null || otherPlayer == this)
+        {
+            return;
+        }
+
+        if (characterData == null || otherPlayer.characterData == null)
+        {
+            return;
+        }
+
+        int myMassStars = characterData.massStars;
+        int otherMassStars = otherPlayer.characterData.massStars;
+
+        int starDifference = otherMassStars - myMassStars;
+
+        if (starDifference <= 0)
+        {
+            return;
+        }
+
+        float pushDirection;
+
+        if (transform.position.x >= otherPlayer.transform.position.x)
+        {
+            pushDirection = 1f;
+        }
+        else
+        {
+            pushDirection = -1f;
+        }
+
+        playerPushVelocityX =
+            pushDirection * starDifference * pushSpeedPerMassStar;
+
+        playerPushTimer = pushDuration;
+    }
+
     private void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.collider.CompareTag("Ground"))
@@ -292,27 +403,37 @@ public class PlayerController2D : MonoBehaviour
     {
         return isPlayer1 ? 1 : -1;
     }
+
+    public int GetMassStars()
+    {
+        if (characterData == null)
+        {
+            return 3;
+        }
+
+        return characterData.massStars;
+    }
+
     public void Stun(float duration)
-{
-    StopAllCoroutines();
+    {
+        StopAllCoroutines();
 
-    StartCoroutine(
-        StunRoutine(duration)
-    );
-}
+        StartCoroutine(
+            StunRoutine(duration)
+        );
+    }
 
-private System.Collections.IEnumerator
-StunRoutine(float duration)
-{
-    isStunned = true;
+    private System.Collections.IEnumerator StunRoutine(float duration)
+    {
+        isStunned = true;
 
-    rb.linearVelocity =
-        Vector2.zero;
+        rb.linearVelocity =
+            Vector2.zero;
 
-    yield return new WaitForSeconds(
-        duration
-    );
+        yield return new WaitForSeconds(
+            duration
+        );
 
-    isStunned = false;
-}
+        isStunned = false;
+    }
 }
