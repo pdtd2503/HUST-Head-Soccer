@@ -34,10 +34,17 @@ public class FootKinematicKickTest : MonoBehaviour
     private Rigidbody2D rb;
     private float progress;
     private KickState state = KickState.Ready;
+    private MatchManager matchManager;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        matchManager = FindFirstObjectByType<MatchManager>();
+    }
+
+    private bool CanKick()
+    {
+        return matchManager == null || matchManager.CanUsePlayerActions();
     }
 
     private void Start()
@@ -54,6 +61,11 @@ public class FootKinematicKickTest : MonoBehaviour
 
     private void Update()
     {
+        if (!CanKick())
+        {
+            return;
+        }
+
         if (state == KickState.Ready && Input.GetKeyDown(kickKey))
         {
             state = KickState.Kicking;
@@ -67,6 +79,14 @@ public class FootKinematicKickTest : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!CanKick())
+        {
+            progress = 0f;
+            state = KickState.Ready;
+            ApplyPose(progress);
+            return;
+        }
+
         if (state == KickState.Kicking)
         {
             progress += Time.fixedDeltaTime / swingTime;

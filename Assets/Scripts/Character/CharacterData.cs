@@ -2,10 +2,10 @@ using UnityEngine;
 
 public enum SkillType
 {
-    SEEE = 0,
-    SME = 1,
-    SOICT = 2,
-    SCLS = 3
+    SOICT,
+    SME,
+    SCLS,
+    SEEE
 }
 
 [CreateAssetMenu(
@@ -27,9 +27,11 @@ public class CharacterData : ScriptableObject
     [Header("Stats")]
     [Range(1, 5)] public int jumpStars;
     [Range(1, 5)] public int speedStars;
-    [Range(1, 5)] public int kickStars;
     [Range(1, 5)] public int massStars;
 
     [Header("Skill")]
     public SkillType skillType;
+
+    [TextArea]
+    public string skillDescription;
 }

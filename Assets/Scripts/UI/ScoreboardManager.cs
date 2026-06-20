@@ -3,65 +3,198 @@ using UnityEngine;
 
 public class ScoreboardManager : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] private MatchManager matchManager;
 
-    [SerializeField] private TextMeshProUGUI halfText;
+    [Header("UI")]
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI timeText;
+
+    [Header("Display Settings")]
+    [Tooltip("Số phút hiển thị trên đồng hồ bóng đá. Trận thật vẫn kéo dài theo MatchManager.")]
+    [SerializeField] private float displayMatchMinutes = 90f;
+
+    private PlayerController2D player1Controller;
+    private PlayerController2D player2Controller;
+
+    private void Start()
+    {
+        ResolveReferences();
+    }
 
     private void Update()
     {
         if (matchManager == null)
         {
-            return;
+            ResolveReferences();
+
+            if (matchManager == null)
+            {
+                return;
+            }
         }
 
-        UpdateHalfText();
+        ResolvePlayerControllers();
+
         UpdateScoreText();
         UpdateTimeText();
     }
 
-    private void UpdateHalfText()
+    private void ResolveReferences()
     {
-        int currentHalf = matchManager.GetCurrentHalf();
-
-        if (!matchManager.CanUsePlayerActions() && matchManager.GetTimer() <= 0f)
+        if (matchManager == null)
         {
-            halfText.text = "FULL TIME";
-            return;
+            matchManager = FindFirstObjectByType<MatchManager>();
         }
 
-        if (currentHalf == 1)
+        ResolvePlayerControllers();
+    }
+
+    private void ResolvePlayerControllers()
+    {
+        if (matchManager != null)
         {
-            halfText.text = "FIRST HALF";
+            if (player1Controller == null && matchManager.player1 != null)
+            {
+                player1Controller =
+                    matchManager.player1.GetComponent<PlayerController2D>();
+            }
+
+            if (player2Controller == null && matchManager.player2 != null)
+            {
+                player2Controller =
+                    matchManager.player2.GetComponent<PlayerController2D>();
+            }
         }
-        else if (currentHalf == 2)
+
+        if (player1Controller == null || player2Controller == null)
         {
-            halfText.text = "SECOND HALF";
-        }
-        else
-        {
-            halfText.text = "HALF " + currentHalf;
+            PlayerController2D[] players =
+                FindObjectsByType<PlayerController2D>(
+                    FindObjectsSortMode.None
+                );
+
+            foreach (PlayerController2D player in players)
+            {
+                if (player == null)
+                {
+                    continue;
+                }
+
+                if (player.isPlayer1)
+                {
+                    player1Controller = player;
+                }
+                else
+                {
+                    player2Controller = player;
+                }
+            }
         }
     }
 
     private void UpdateScoreText()
     {
-        scoreText.text = matchManager.GetPlayer1Score() + " - " + matchManager.GetPlayer2Score();
+        if (scoreText == null)
+        {
+            return;
+        }
+
+        string player1Name = GetCharacterDisplayName(
+            player1Controller,
+            "Player 1"
+        );
+
+        string player2Name = GetCharacterDisplayName(
+            player2Controller,
+            "Player 2"
+        );
+
+        int player1Score = matchManager.GetPlayer1Score();
+        int player2Score = matchManager.GetPlayer2Score();
+
+        scoreText.text =
+            $"{player1Name} {player1Score} - {player2Score} {player2Name}";
+    }
+
+    private string GetCharacterDisplayName(
+        PlayerController2D playerController,
+        string fallbackName
+    )
+    {
+        if (playerController == null)
+        {
+            return fallbackName;
+        }
+
+        if (playerController.characterData == null)
+        {
+            return fallbackName;
+        }
+
+        string characterName = playerController.characterData.name;
+
+        characterName = characterName.Replace("_Data", "");
+        characterName = characterName.Replace("Data", "");
+
+        return characterName;
     }
 
     private void UpdateTimeText()
     {
-        float timer = matchManager.GetTimer();
-
-        if (timer < 0f)
+        if (timeText == null)
         {
-            timer = 0f;
+            return;
         }
 
-        int minutes = Mathf.FloorToInt(timer / 60f);
-        int seconds = Mathf.FloorToInt(timer % 60f);
+        if (matchManager != null && matchManager.IsSuddenDeathActive())
+        {
+            timeText.text = "SUDDEN DEATH";
+            return;
+        }
 
-        timeText.text = minutes.ToString("00") + ":" + seconds.ToString("00");
+        if (GameSessionManager.Instance != null &&
+            GameSessionManager.Instance.currentGameMode == GameMode.GoldenGoal)
+        {
+            timeText.text = "GOLDEN GOAL";
+            return;
+        }
+
+        float matchDuration = matchManager.GetMatchDuration();
+
+        if (matchDuration <= 0f)
+        {
+            matchDuration = 90f;
+        }
+
+        float elapsedRealTime = Mathf.Clamp(
+            matchManager.GetTimer(),
+            0f,
+            matchDuration
+        );
+
+        float progress = elapsedRealTime / matchDuration;
+
+        int maxDisplaySeconds =
+            Mathf.RoundToInt(displayMatchMinutes * 60f);
+
+        int totalDisplaySeconds =
+            Mathf.FloorToInt(progress * maxDisplaySeconds);
+
+        if (matchManager.IsMatchEnded())
+        {
+            totalDisplaySeconds = maxDisplaySeconds;
+        }
+
+        totalDisplaySeconds = Mathf.Clamp(
+            totalDisplaySeconds,
+            0,
+            maxDisplaySeconds
+        );
+
+        int minutes = totalDisplaySeconds / 60;
+        int seconds = totalDisplaySeconds % 60;
+
+        timeText.text = $"{minutes:00}:{seconds:00}";
     }
 }

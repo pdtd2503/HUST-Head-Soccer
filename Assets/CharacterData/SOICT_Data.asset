@@ -17,8 +17,12 @@ MonoBehaviour:
   headLeftSprite: {fileID: 21300000, guid: 77089516d1d960a40ac7054dff844024, type: 3}
   footRightSprite: {fileID: 21300000, guid: 1973ac0954dbb5840ba337822400b5ef, type: 3}
   footLeftSprite: {fileID: 21300000, guid: aa3c094ee03f8404b9a0b55d855028de, type: 3}
-  jumpStars: 4
-  speedStars: 5
-  kickStars: 2
-  massStars: 1
-  skillType: 2
+  jumpStars: 3
+  speedStars: 3
+  kickStars: 1
+  massStars: 3
+  skillType: 0
+  skillDescription: "Hack qu\u1EF9 \u0111\u1EA1o qu\u1EA3 b\xF3ng khi\u1EBFn b\xF3ng
+    l\u1EADp t\u1EE9c bay c\u1EF1c nhanh v\u1EC1 ph\xEDa khung th\xE0nh \u0111\u1ED1i
+    th\u1EE7 v\xE0 t\u1EA1m th\u1EDDi kh\xF4ng b\u1ECB \u1EA3nh h\u01B0\u1EDFng b\u1EDFi
+    tr\u1ECDng l\u1EF1c\n"
