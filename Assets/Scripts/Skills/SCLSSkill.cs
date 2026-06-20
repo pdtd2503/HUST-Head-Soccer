@@ -8,14 +8,82 @@ public class SCLSSkill : MonoBehaviour
     private const float FLASH_DURATION = 0.05f;
     private const int FLASH_COUNT = 4;
 
-    public void UseSkill(PlayerController2D opponentController)
+    private const float THROW_SPEED = 12f;
+    private const float THROW_SIZE = 0.3f;
+    private const float ARC_HEIGHT = 1.5f;
+    private const float SPIN_SPEED = 540f;
+
+    private GameObject vialPrefab; // đổi từ Sprite sang GameObject
+
+    private void Awake()
     {
-        if (opponentController == null)
+        vialPrefab = Resources.Load<GameObject>("ChemicalVial"); // đổi <Sprite> thành <GameObject>
+
+        if (vialPrefab == null)
         {
-            Debug.LogWarning("SCLS skill could not find opponent.");
+            Debug.LogError("Không tìm thấy ChemicalVial Prefab trong Resources!");
+        }
+    }
+    public void UseSkill(PlayerController2D playerController, PlayerController2D opponentController)
+    {
+        if (opponentController == null || playerController == null)
+        {
+            Debug.LogWarning("SCLS skill could not find opponent or player.");
             return;
         }
 
+        Time.timeScale = 0f;
+
+        StartCoroutine(ThrowVialRoutine(playerController, opponentController));
+    }
+
+    private IEnumerator ThrowVialRoutine(PlayerController2D playerController, PlayerController2D opponentController)
+    {
+        GameObject vial = Instantiate(vialPrefab, playerController.transform.position, Quaternion.identity);
+
+        SpriteRenderer sr = vial.GetComponentInChildren<SpriteRenderer>();
+        if (sr != null)
+        {
+            sr.sortingOrder = 20;
+        }
+
+        Vector3 targetPosition = opponentController.transform.position;
+        Vector3 startPosition = vial.transform.position;
+        float distance = Vector3.Distance(startPosition, targetPosition);
+        float travelTime = distance / THROW_SPEED;
+
+        float elapsed = 0f;
+
+        while (elapsed < travelTime)
+        {
+            if (vial == null) yield break;
+
+            elapsed += Time.unscaledDeltaTime;
+            float t = Mathf.Clamp01(elapsed / travelTime);
+
+            Vector3 linearPos = Vector3.Lerp(startPosition, targetPosition, t);
+            float heightOffset = ARC_HEIGHT * 4f * t * (1f - t);
+
+            vial.transform.position = new Vector3(
+                linearPos.x,
+                linearPos.y + heightOffset,
+                linearPos.z
+            );
+
+            vial.transform.Rotate(0f, 0f, SPIN_SPEED * Time.unscaledDeltaTime);
+
+            yield return null;
+        }
+
+        Destroy(vial);
+
+        yield return StartCoroutine(ApplyShrinkEffect(opponentController));
+
+        Time.timeScale = 1f;
+    }
+
+    private IEnumerator ApplyShrinkEffect(PlayerController2D opponentController)
+    {
         SclsShrinkRuntime shrinkRuntime = opponentController.GetComponent<SclsShrinkRuntime>();
 
         if (shrinkRuntime == null)
@@ -23,7 +91,9 @@ public class SCLSSkill : MonoBehaviour
             shrinkRuntime = opponentController.gameObject.AddComponent<SclsShrinkRuntime>();
         }
 
-        shrinkRuntime.ApplyShrink(SHRINK_SCALE_MULTIPLIER, SHRINK_DURATION, FLASH_DURATION, FLASH_COUNT);
+        yield return shrinkRuntime.ApplyShrinkAndWaitAppear(
+            SHRINK_SCALE_MULTIPLIER, SHRINK_DURATION, FLASH_DURATION, FLASH_COUNT
+        );
     }
 }
 
@@ -33,7 +103,7 @@ class SclsShrinkRuntime : MonoBehaviour
     private Vector3 originalScale;
     private bool hasOriginalScale;
 
-    public void ApplyShrink(float scaleMultiplier, float duration, float flashDuration, int flashCount)
+    public IEnumerator ApplyShrinkAndWaitAppear(float scaleMultiplier, float duration, float flashDuration, int flashCount)
     {
         if (!hasOriginalScale)
         {
@@ -46,30 +116,34 @@ class SclsShrinkRuntime : MonoBehaviour
             StopCoroutine(shrinkCoroutine);
         }
 
-        shrinkCoroutine = StartCoroutine(ShrinkRoutine(scaleMultiplier, duration, flashDuration, flashCount));
-    }
+        SpriteRenderer[] allRenderers = GetComponentsInChildren<SpriteRenderer>();
 
-    private IEnumerator ShrinkRoutine(float scaleMultiplier, float duration, float flashDuration, int flashCount)
-    {
-        PlayerController2D playerController = GetComponent<PlayerController2D>();
-        SpriteRenderer sr = GetComponentInChildren<SpriteRenderer>();
-
-        // Bước 1: Flash màu tím
-        if (sr != null)
+        if (allRenderers.Length > 0)
         {
-            Color originalColor = sr.color;
+            Color[] originalColors = new Color[allRenderers.Length];
+            for (int i = 0; i < allRenderers.Length; i++)
+            {
+                originalColors[i] = allRenderers[i].color;
+            }
+
             Color flashColor = new Color(0.8f, 0.2f, 1f);
 
             for (int i = 0; i < flashCount; i++)
             {
-                sr.color = flashColor;
-                yield return new WaitForSeconds(flashDuration);
-                sr.color = originalColor;
-                yield return new WaitForSeconds(flashDuration);
+                foreach (SpriteRenderer renderer in allRenderers)
+                {
+                    if (renderer != null) renderer.color = flashColor;
+                }
+                yield return new WaitForSecondsRealtime(flashDuration);
+
+                for (int j = 0; j < allRenderers.Length; j++)
+                {
+                    if (allRenderers[j] != null) allRenderers[j].color = originalColors[j];
+                }
+                yield return new WaitForSecondsRealtime(flashDuration);
             }
         }
 
-        // Bước 2: Scale giật cục thu nhỏ
         float[] steps = { 0.85f, 0.65f, 0.75f, 0.55f, scaleMultiplier };
 
         foreach (float step in steps)
@@ -79,19 +153,22 @@ class SclsShrinkRuntime : MonoBehaviour
                 originalScale.y * step,
                 originalScale.z
             );
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSecondsRealtime(0.05f);
         }
 
-        // Giảm tốc độ và jump khi bị shrink
+        PlayerController2D playerController = GetComponent<PlayerController2D>();
+        shrinkCoroutine = StartCoroutine(ShrinkDurationAndRestoreRoutine(duration, scaleMultiplier, playerController));
+    }
+
+    private IEnumerator ShrinkDurationAndRestoreRoutine(float duration, float scaleMultiplier, PlayerController2D playerController)
+    {
         if (playerController != null)
         {
-            playerController.SetTemporarySpeedStars(1, duration); // giảm speed xuống 1 sao
+            playerController.SetTemporarySpeedStars(1, duration);
         }
 
-        // Giữ nguyên shrink trong duration giây
         yield return new WaitForSeconds(duration);
 
-        // Bước 3: Phục hồi kích thước giật cục
         float[] stepsBack = { 0.55f, 0.75f, 0.65f, 0.85f, 1.0f };
 
         foreach (float step in stepsBack)
@@ -110,13 +187,11 @@ class SclsShrinkRuntime : MonoBehaviour
 
     private void OnDisable()
     {
-        if (hasOriginalScale)
-            transform.localScale = originalScale;
+        if (hasOriginalScale) transform.localScale = originalScale;
     }
 
     private void OnDestroy()
     {
-        if (hasOriginalScale)
-            transform.localScale = originalScale;
+        if (hasOriginalScale) transform.localScale = originalScale;
     }
 }

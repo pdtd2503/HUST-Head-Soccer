@@ -61,9 +61,11 @@ public class PlayerController2D : MonoBehaviour
     private bool isStunned = false;
 
     private float moveSpeed;
+    private float baseMoveSpeed;
     private float jumpForce;
 
     private float lastJumpTime = -999f;
+    private Coroutine speedBoostCoroutine;
 
     private float playerPushVelocityX;
     private float playerPushTimer;
@@ -157,6 +159,7 @@ public class PlayerController2D : MonoBehaviour
             CharacterStats.GetMass(characterData.massStars);
 
         moveSpeed = designSpeed * moveMultiplier;
+        baseMoveSpeed = moveSpeed;
 
         float jumpCenterHeight = jumpReach - 1f;
         float gravity = Mathf.Abs(Physics2D.gravity.y * rb.gravityScale);
@@ -435,5 +438,25 @@ public class PlayerController2D : MonoBehaviour
         );
 
         isStunned = false;
+    }
+
+    public void SetTemporarySpeedStars(int stars, float duration)
+    {
+        if (speedBoostCoroutine != null)
+        {
+            StopCoroutine(speedBoostCoroutine);
+        }
+
+        speedBoostCoroutine = StartCoroutine(TemporarySpeedRoutine(stars, duration));
+    }
+
+    private System.Collections.IEnumerator TemporarySpeedRoutine(int stars, float duration)
+    {
+        moveSpeed = CharacterStats.GetSpeed(stars) * moveMultiplier;
+
+        yield return new WaitForSeconds(duration);
+
+        moveSpeed = baseMoveSpeed;
+        speedBoostCoroutine = null;
     }
 }

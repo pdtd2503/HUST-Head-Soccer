@@ -5,10 +5,15 @@ public class PlayerSkillController : MonoBehaviour
     private const KeyCode PLAYER_1_SKILL_KEY = KeyCode.V;
     private const KeyCode PLAYER_2_SKILL_KEY = KeyCode.O;
 
-    private const float SOICT_COOLDOWN = 10f;
-    private const float SME_COOLDOWN = 12f;
-    private const float SCLS_COOLDOWN = 14f;
-    private const float SEEE_COOLDOWN = 8f;
+    private const float SOICT_COOLDOWN = 1f;
+    private const float SME_COOLDOWN = 1f;
+    private const float SCLS_COOLDOWN = 1f;
+    private const float SEEE_COOLDOWN = 1f;
+    
+    private SOICTSkill soictSkill;
+    private SMESkill smeSkill;
+    private SCLSSkill sclsSkill;
+    private SEEESkill seeeSkill;
 
     private PlayerController2D playerController;
     private PlayerController2D opponentController;
@@ -38,6 +43,8 @@ public class PlayerSkillController : MonoBehaviour
         matchManager = FindFirstObjectByType<MatchManager>();
 
         FindBall();
+
+        SetupSkillComponents();
     }
 
     private void Start()
@@ -172,24 +179,44 @@ public class PlayerSkillController : MonoBehaviour
         }
     }
 
+    private void SetupSkillComponents()
+    {
+        soictSkill = GetOrAddSkill<SOICTSkill>();
+        smeSkill = GetOrAddSkill<SMESkill>();
+        sclsSkill = GetOrAddSkill<SCLSSkill>();
+        seeeSkill = GetOrAddSkill<SEEESkill>();
+    }
+
+    private T GetOrAddSkill<T>() where T : Component
+    {
+        T skill = GetComponent<T>();
+
+        if (skill == null)
+        {
+            skill = gameObject.AddComponent<T>();
+        }
+
+        return skill;
+    }
+
     private void UseSkill(SkillType skillType)
     {
         switch (skillType)
         {
             case SkillType.SOICT:
-                SOICTSkill.UseSkill(playerController, ballRb);
+                soictSkill.UseSkill(playerController, ballRb);
                 break;
 
             case SkillType.SME:
-                SMESkill.UseSkill(playerController, matchManager);
+                smeSkill.UseSkill(playerController, matchManager);
                 break;
 
             case SkillType.SCLS:
-                SCLSSkill.UseSkill(opponentController);
+                sclsSkill.UseSkill(playerController, opponentController);
                 break;
 
             case SkillType.SEEE:
-                SEEESkill.UseSkill(playerController, ball);
+                seeeSkill.UseSkill(playerController, ball);
                 break;
 
             default:

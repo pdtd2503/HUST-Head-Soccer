@@ -4,7 +4,7 @@ using UnityEngine;
 public class SMESkill : MonoBehaviour
 {
     private const float WALL_DURATION = 2f;
-    private const float WALL_GOAL_OFFSET = 0.55f;
+    private const float WALL_GOAL_OFFSET = 1f;
     private const float APPEAR_DURATION = 0.45f; // thời gian mọc lên
 
     private GameObject rockWallPrefab;
