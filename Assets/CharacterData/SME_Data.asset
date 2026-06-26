@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c59cbd4f45a87ba44bac99016308e0d2, type: 3}
   m_Name: SME_Data
   m_EditorClassIdentifier: Assembly-CSharp::CharacterData
-  characterName: 
+  characterName: SME
   headRightSprite: {fileID: 21300000, guid: 458beb6827e9926489d8400ab7924d8f, type: 3}
   headLeftSprite: {fileID: 21300000, guid: b422e9a12e51ef7488d1f0d37c14c31e, type: 3}
   footRightSprite: {fileID: 21300000, guid: 1973ac0954dbb5840ba337822400b5ef, type: 3}

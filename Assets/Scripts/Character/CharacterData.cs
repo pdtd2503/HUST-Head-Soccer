@@ -27,6 +27,7 @@ public class CharacterData : ScriptableObject
     [Header("Stats")]
     [Range(1, 5)] public int jumpStars;
     [Range(1, 5)] public int speedStars;
+    [Range(1, 5)] public int kickStars;
     [Range(1, 5)] public int massStars;
 
     [Header("Skill")]

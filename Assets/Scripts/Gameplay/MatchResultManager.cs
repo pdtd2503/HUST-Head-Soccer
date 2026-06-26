@@ -1,14 +1,21 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MatchResultManager : MonoBehaviour
 {
-    [Header("UI Text")]
+    [Header("Result Texts")]
     public TMP_Text titleText;
     public TMP_Text scoreText;
     public TMP_Text winnerText;
     public TMP_Text tournamentInfoText;
+
+    [Header("Character Result UI")]
+    public Image player1ResultImage;
+    public Image player2ResultImage;
+    public TMP_Text player1ResultNameText;
+    public TMP_Text player2ResultNameText;
 
     [Header("Buttons")]
     public GameObject rematchButton;
@@ -34,6 +41,8 @@ public class MatchResultManager : MonoBehaviour
             return;
         }
 
+        UpdateCharacterImages(session);
+
         if (session.currentGameMode == GameMode.Tournament)
         {
             UpdateTournamentResult(session);
@@ -41,6 +50,36 @@ public class MatchResultManager : MonoBehaviour
         else
         {
             UpdateNormalResult(session);
+        }
+    }
+
+    private void UpdateCharacterImages(GameSessionManager session)
+    {
+        CharacterData player1Data = GameData.player1Data;
+        CharacterData player2Data = GameData.player2Data;
+
+        if (player1ResultImage != null && player1Data != null)
+        {
+            player1ResultImage.sprite = player1Data.headRightSprite;
+            player1ResultImage.preserveAspect = true;
+        }
+
+        if (player2ResultImage != null && player2Data != null)
+        {
+            player2ResultImage.sprite = player2Data.headLeftSprite;
+            player2ResultImage.preserveAspect = true;
+        }
+
+        if (player1ResultNameText != null)
+        {
+            player1ResultNameText.text =
+                "PLAYER 1\n" + GetCharacterDisplayName(player1Data, session.player1CharacterName);
+        }
+
+        if (player2ResultNameText != null)
+        {
+            player2ResultNameText.text =
+                "PLAYER 2\n" + GetCharacterDisplayName(player2Data, session.player2CharacterName);
         }
     }
 
@@ -59,14 +98,7 @@ public class MatchResultManager : MonoBehaviour
 
         if (winnerText != null)
         {
-            if (session.lastMatchWinner == 0)
-            {
-                winnerText.text = "Draw";
-            }
-            else
-            {
-                winnerText.text = $"Winner: {session.GetLastMatchWinnerName()}";
-            }
+            winnerText.text = BuildWinnerText(session, false);
         }
 
         if (tournamentInfoText != null)
@@ -85,9 +117,7 @@ public class MatchResultManager : MonoBehaviour
 
         if (titleText != null)
         {
-            titleText.text = tournamentComplete
-                ? "TOURNAMENT CHAMPION"
-                : "TOURNAMENT RESULT";
+            titleText.text = "MATCH RESULT";
         }
 
         if (scoreText != null)
@@ -98,28 +128,51 @@ public class MatchResultManager : MonoBehaviour
 
         if (winnerText != null)
         {
-            if (tournamentComplete)
-            {
-                winnerText.text =
-                    $"{session.GetTournamentWinnerName()} wins the tournament!";
-            }
-            else
-            {
-                winnerText.text =
-                    $"Match Winner: {session.GetLastMatchWinnerName()}";
-            }
+            winnerText.text = BuildWinnerText(session, tournamentComplete);
         }
 
         if (tournamentInfoText != null)
         {
             tournamentInfoText.gameObject.SetActive(true);
             tournamentInfoText.text =
-                $"Tournament Score: {session.player1CharacterName} {session.player1TournamentWins} - {session.player2TournamentWins} {session.player2CharacterName}";
+                $"TOURNAMENT SCORE: PLAYER 1 {session.player1TournamentWins} - {session.player2TournamentWins} PLAYER 2";
         }
 
         SetButtonActive(rematchButton, false);
         SetButtonActive(nextButton, !tournamentComplete);
         SetButtonActive(mainMenuButton, tournamentComplete);
+    }
+
+    private string BuildWinnerText(GameSessionManager session, bool tournamentComplete)
+    {
+        if (session.lastMatchWinner == 1)
+        {
+            string label = tournamentComplete ? "TOURNAMENT WINNER" : "WINNER";
+            return $"{label}: PLAYER 1\n{session.player1CharacterName}";
+        }
+
+        if (session.lastMatchWinner == 2)
+        {
+            string label = tournamentComplete ? "TOURNAMENT WINNER" : "WINNER";
+            return $"{label}: PLAYER 2\n{session.player2CharacterName}";
+        }
+
+        return "DRAW";
+    }
+
+    private string GetCharacterDisplayName(CharacterData data, string fallbackName)
+    {
+        if (data != null && !string.IsNullOrWhiteSpace(data.characterName))
+        {
+            return data.characterName.Trim();
+        }
+
+        if (!string.IsNullOrWhiteSpace(fallbackName))
+        {
+            return fallbackName.Trim();
+        }
+
+        return "UNKNOWN";
     }
 
     private void ShowFallbackPreview()
@@ -142,6 +195,16 @@ public class MatchResultManager : MonoBehaviour
         if (tournamentInfoText != null)
         {
             tournamentInfoText.gameObject.SetActive(false);
+        }
+
+        if (player1ResultNameText != null)
+        {
+            player1ResultNameText.text = "PLAYER 1";
+        }
+
+        if (player2ResultNameText != null)
+        {
+            player2ResultNameText.text = "PLAYER 2";
         }
 
         SetButtonActive(rematchButton, false);

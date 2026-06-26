@@ -1,282 +1,266 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class CharacterSelectManager : MonoBehaviour
 {
-    [Header("P1/P2 Selection Labels")]
-    public TMP_Text seeeLabel;
-    public TMP_Text sclsLabel;
-    public TMP_Text smeLabel;
-    public TMP_Text soictLabel;
-
-    [Header("Character Info Texts")]
-    public TMP_Text seeeInfoText;
-    public TMP_Text sclsInfoText;
-    public TMP_Text smeInfoText;
-    public TMP_Text soictInfoText;
-
     [Header("Character Data")]
-    public CharacterData seeeData;
-    public CharacterData sclsData;
-    public CharacterData smeData;
-    public CharacterData soictData;
+    public CharacterData[] characters;
 
-    [Header("Selected Character Detail")]
-    public TMP_Text descriptionText;
+    [Header("Player 1 UI")]
+    public Image player1CharacterImage;
+    public TMP_Text player1CharacterNameText;
+    public TMP_Text player1StatsText;
+    public TMP_Text player1SkillText;
 
-    private bool choosingPlayer1 = true;
+    [Header("Player 2 UI")]
+    public Image player2CharacterImage;
+    public TMP_Text player2CharacterNameText;
+    public TMP_Text player2StatsText;
+    public TMP_Text player2SkillText;
+
+    [Header("Scene Settings")]
+    public string mapSelectSceneName = "MapSelect";
+
+    private int player1Index = 0;
+    private int player2Index = 1;
 
     private void Start()
     {
-        ResetSelection();
-    }
-
-    public void SelectCharacter(string characterName)
-    {
-        if (GameData.player1Character != "" &&
-            GameData.player2Character != "")
+        if (characters == null || characters.Length == 0)
         {
+            Debug.LogError("CharacterSelectManager: Chưa gán danh sách characters.");
             return;
         }
 
-        CharacterData selectedData = GetCharacterData(characterName);
-
-        if (selectedData == null)
+        if (characters.Length == 1)
         {
-            Debug.LogWarning($"No CharacterData found for {characterName}");
-            return;
-        }
-
-        if (choosingPlayer1)
-        {
-            GameData.player1Character = characterName;
-            GameData.player1Data = selectedData;
-
-            AddLabel(characterName, "P1");
-
-            choosingPlayer1 = false;
+            player1Index = 0;
+            player2Index = 0;
         }
         else
         {
-            GameData.player2Character = characterName;
-            GameData.player2Data = selectedData;
+            player1Index = Mathf.Clamp(player1Index, 0, characters.Length - 1);
+            player2Index = Mathf.Clamp(player2Index, 0, characters.Length - 1);
 
-            AddLabel(characterName, "P2");
+            if (player1Index == player2Index)
+            {
+                player2Index = (player1Index + 1) % characters.Length;
+            }
         }
 
-        ShowDescription(selectedData);
+        UpdateAllUI();
     }
 
-    private CharacterData GetCharacterData(string characterName)
+    public void Player1Next()
     {
-        switch (characterName)
-        {
-            case "SEEE":
-                return seeeData;
-
-            case "SCLS":
-                return sclsData;
-
-            case "SME":
-                return smeData;
-
-            case "SOICT":
-                return soictData;
-
-            default:
-                return null;
-        }
+        player1Index = GetNextIndex(player1Index);
+        UpdatePlayer1UI();
     }
 
-    private void AddLabel(string characterName, string playerTag)
+    public void Player1Previous()
     {
-        TMP_Text targetLabel = GetLabel(characterName);
+        player1Index = GetPreviousIndex(player1Index);
+        UpdatePlayer1UI();
+    }
 
-        if (targetLabel == null)
+    public void Player2Next()
+    {
+        player2Index = GetNextIndex(player2Index);
+        UpdatePlayer2UI();
+    }
+
+    public void Player2Previous()
+    {
+        player2Index = GetPreviousIndex(player2Index);
+        UpdatePlayer2UI();
+    }
+
+    public void StartMatch()
+    {
+        if (characters == null || characters.Length == 0)
         {
+            Debug.LogError("Không thể bắt đầu vì chưa có character data.");
             return;
         }
 
-        if (targetLabel.text == "")
+        CharacterData player1Data = characters[player1Index];
+        CharacterData player2Data = characters[player2Index];
+
+        if (player1Data == null || player2Data == null)
         {
-            targetLabel.text = playerTag;
-        }
-        else
-        {
-            targetLabel.text += " " + playerTag;
-        }
-    }
-
-    private TMP_Text GetLabel(string characterName)
-    {
-        switch (characterName)
-        {
-            case "SEEE":
-                return seeeLabel;
-
-            case "SCLS":
-                return sclsLabel;
-
-            case "SME":
-                return smeLabel;
-
-            case "SOICT":
-                return soictLabel;
-
-            default:
-                return null;
-        }
-    }
-
-    private void ShowDescription(CharacterData data)
-    {
-        if (descriptionText == null || data == null)
-        {
+            Debug.LogError("Không thể bắt đầu vì Player 1 hoặc Player 2 chưa có dữ liệu nhân vật.");
             return;
         }
 
-        descriptionText.text = BuildCharacterInfoText(data);
+        GameData.player1Data = player1Data;
+        GameData.player2Data = player2Data;
+
+        GameData.player1Character = GetDisplayName(player1Data);
+        GameData.player2Character = GetDisplayName(player2Data);
+
+        SceneManager.LoadScene(mapSelectSceneName);
     }
 
-    public void ResetSelection()
+    public void Back()
     {
-        GameData.player1Character = "";
-        GameData.player2Character = "";
-
-        GameData.player1Data = null;
-        GameData.player2Data = null;
-
-        choosingPlayer1 = true;
-
-        ClearLabel(seeeLabel);
-        ClearLabel(sclsLabel);
-        ClearLabel(smeLabel);
-        ClearLabel(soictLabel);
-
-        if (descriptionText != null)
-        {
-            descriptionText.text = "Chon nhan vat de xem chi tiet.";
-        }
-
-        RenderAllCharacterInfo();
+        SceneManager.LoadScene("MainMenuScene");
     }
 
-    private void RenderAllCharacterInfo()
+    private void UpdateAllUI()
     {
-        SetInfoText(seeeInfoText, seeeData);
-        SetInfoText(sclsInfoText, sclsData);
-        SetInfoText(smeInfoText, smeData);
-        SetInfoText(soictInfoText, soictData);
+        UpdatePlayer1UI();
+        UpdatePlayer2UI();
     }
 
-    private void SetInfoText(TMP_Text targetText, CharacterData data)
+    private void UpdatePlayer1UI()
     {
-        if (targetText == null)
-        {
-            return;
-        }
-
-        if (data == null)
-        {
-            targetText.text = "";
-            return;
-        }
-
-        targetText.text = BuildCharacterInfoText(data);
+        CharacterData data = GetCharacter(player1Index);
+        UpdatePlayerUI(data, player1CharacterImage, player1CharacterNameText, player1StatsText, player1SkillText, true);
     }
 
-    private string BuildCharacterInfoText(CharacterData data)
+    private void UpdatePlayer2UI()
+    {
+        CharacterData data = GetCharacter(player2Index);
+        UpdatePlayerUI(data, player2CharacterImage, player2CharacterNameText, player2StatsText, player2SkillText, false);
+    }
+
+    private void UpdatePlayerUI(
+        CharacterData data,
+        Image characterImage,
+        TMP_Text characterNameText,
+        TMP_Text statsText,
+        TMP_Text skillText,
+        bool isPlayer1
+    )
     {
         if (data == null)
         {
-            return "";
+            return;
         }
 
-        string displayName = data.characterName;
-
-        if (string.IsNullOrEmpty(displayName))
+        if (characterImage != null)
         {
-            displayName = data.skillType.ToString();
+            Sprite spriteToShow = isPlayer1 ? data.headRightSprite : data.headLeftSprite;
+
+            if (spriteToShow == null)
+            {
+                spriteToShow = data.headRightSprite != null ? data.headRightSprite : data.headLeftSprite;
+            }
+
+            characterImage.sprite = spriteToShow;
+            characterImage.preserveAspect = true;
         }
 
+        if (characterNameText != null)
+        {
+            characterNameText.text = GetDisplayName(data);
+        }
+
+        if (statsText != null)
+        {
+            statsText.text = BuildStatsText(data);
+        }
+
+        if (skillText != null)
+        {
+            skillText.text = "SKILL: " + GetSkillName(data);
+        }
+    }
+
+    private CharacterData GetCharacter(int index)
+    {
+        if (characters == null || characters.Length == 0)
+        {
+            return null;
+        }
+
+        index = Mathf.Clamp(index, 0, characters.Length - 1);
+        return characters[index];
+    }
+
+    private int GetNextIndex(int currentIndex)
+    {
+        if (characters == null || characters.Length == 0)
+        {
+            return 0;
+        }
+
+        return (currentIndex + 1) % characters.Length;
+    }
+
+    private int GetPreviousIndex(int currentIndex)
+    {
+        if (characters == null || characters.Length == 0)
+        {
+            return 0;
+        }
+
+        return (currentIndex - 1 + characters.Length) % characters.Length;
+    }
+
+    private string BuildStatsText(CharacterData data)
+    {
         return
-            displayName + "\n" +
-            "Jump: " + data.jumpStars + "/5\n" +
-            "Speed: " + data.speedStars + "/5\n" +
-            "Mass: " + data.massStars + "/5\n" +
-            "Skill: " + GetSkillDescription(data);
+            "SPD  " + BuildBoxes(data.speedStars) + "\n" +
+            "JMP  " + BuildBoxes(data.jumpStars) + "\n" +
+            "KCK  " + BuildBoxes(data.kickStars) + "\n" +
+            "MAS  " + BuildBoxes(data.massStars);
     }
 
-    private string GetSkillDescription(CharacterData data)
+    private string BuildBoxes(int value)
+    {
+        value = Mathf.Clamp(value, 0, 5);
+
+        string result = "";
+
+        for (int i = 0; i < 5; i++)
+        {
+            result += i < value ? "■" : "□";
+        }
+
+        return result;
+    }
+
+    private string GetDisplayName(CharacterData data)
     {
         if (data == null)
         {
             return "";
         }
 
-        if (!string.IsNullOrEmpty(data.skillDescription) &&
-            data.skillDescription.Trim().Length > 0)
+        if (!string.IsNullOrWhiteSpace(data.characterName))
         {
-            return data.skillDescription.Trim();
+            return data.characterName.Trim();
+        }
+
+        return data.skillType.ToString();
+    }
+
+    private string GetSkillName(CharacterData data)
+    {
+        if (data == null)
+        {
+            return "";
         }
 
         switch (data.skillType)
         {
             case SkillType.SOICT:
-                return "Sut bong bay nhanh theo chieu ngang va tam thoi khong bi anh huong boi trong luc.";
+                return "DIGITAL SHOT";
 
             case SkillType.SME:
-                return "Dung tuong tam thoi truoc khung thanh nha de chan bong.";
+                return "DEFENSE WALL";
 
             case SkillType.SCLS:
-                return "Lam doi thu bi nho lai trong thoi gian ngan.";
+                return "CHEMICAL FLASK";
 
             case SkillType.SEEE:
-                return "Dich chuyen ngay den vi tri gan bong.";
+                return "TELEPORT";
 
             default:
-                return "Chua co mo ta skill.";
+                return "UNKNOWN";
         }
-    }
-
-    private void ClearLabel(TMP_Text label)
-    {
-        if (label != null)
-        {
-            label.text = "";
-        }
-    }
-
-    public void StartMatch()
-    {
-        if (GameData.player1Data == null ||
-            GameData.player2Data == null)
-        {
-            Debug.Log("Chua chon du nhan vat");
-            return;
-        }
-
-        if (GameSessionManager.Instance != null &&
-            GameSessionManager.Instance.currentGameMode == GameMode.Tournament)
-        {
-            string randomMapScene =
-                GameSessionManager.Instance.GetRandomTournamentMap();
-
-            if (string.IsNullOrWhiteSpace(randomMapScene))
-            {
-                Debug.LogError("Cannot start tournament match because map scene is empty.");
-                return;
-            }
-
-            GameData.selectedMap = randomMapScene;
-
-            Debug.Log("Tournament Match 1 map: " + randomMapScene);
-
-            SceneManager.LoadScene(randomMapScene);
-            return;
-        }
-
-        SceneManager.LoadScene("MapSelect");
     }
 }
