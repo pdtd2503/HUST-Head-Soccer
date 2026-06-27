@@ -57,6 +57,8 @@ public class MatchManager : MonoBehaviour
 
         ResetPositions();
 
+        AudioManager.Instance?.PlayWhistleStart();
+
         Debug.Log("Match started. Duration: 90 seconds.");
     }
 
@@ -162,6 +164,8 @@ public class MatchManager : MonoBehaviour
 
         HideGoalText();
 
+        AudioManager.Instance?.PlayWhistleEnd(); 
+
         SaveMatchResult();
 
         Debug.Log(
@@ -217,6 +221,8 @@ public class MatchManager : MonoBehaviour
         );
 
         ShowGoalText(scoringPlayer);
+
+        AudioManager.Instance?.PlayGoalCheer();
 
         StopAllBodies();
 

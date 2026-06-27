@@ -309,7 +309,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: -36.814793, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &80576137
@@ -622,7 +622,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 763456691}
         m_TargetAssemblyTypeName: PauseMenuManager, Assembly-CSharp
         m_MethodName: PauseGame
         m_Mode: 1
@@ -1442,7 +1442,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 763456691}
         m_TargetAssemblyTypeName: PauseMenuManager, Assembly-CSharp
         m_MethodName: ExitToMainMenu
         m_Mode: 1
@@ -1577,7 +1577,7 @@ Transform:
   m_GameObject: {fileID: 558607178}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.01, y: 3.02, z: 0}
+  m_LocalPosition: {x: 0.01, y: 2.96, z: 0}
   m_LocalScale: {x: 0.96, y: 0.96, z: 0.96}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -2153,7 +2153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8219ae86baeecc14fbc2e06ef72706b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PauseMenuManager
-  pausePanel: {fileID: 0}
+  pausePanel: {fileID: 888908620}
   mainMenuSceneName: MainMenuScene
 --- !u!4 &763456692
 Transform:
@@ -2245,6 +2245,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 777850184}
   m_CullTransparentMesh: 1
+--- !u!1 &813756890
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 813756892}
+  - component: {fileID: 813756891}
+  m_Layer: 0
+  m_Name: ButtonAudio (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &813756891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 813756890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c29df1b9dd8f0143b935f628c6b4d73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonAudio
+  buttonClickSound: {fileID: 8300000, guid: bd4244c760230d74fa421de6dd2db65e, type: 3}
+--- !u!4 &813756892
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 813756890}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 492.9722, y: 185.38895, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &829100426
 GameObject:
   m_ObjectHideFlags: 0
@@ -2962,6 +3007,7 @@ GameObject:
   - component: {fileID: 1205485361}
   - component: {fileID: 1205485360}
   - component: {fileID: 1205485365}
+  - component: {fileID: 1205485366}
   m_Layer: 8
   m_Name: Ball
   m_TagString: Ball
@@ -3060,6 +3106,94 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a141a9a296fc47f0818e7154f6e9041, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BallWindEffect
+--- !u!114 &1205485366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1205485359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 460c5937e6effb442b9baa128dde3abb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BallAudio
+  minVelocity: 1
+  maxVelocity: 15
+--- !u!1 &1214754870
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1214754872}
+  - component: {fileID: 1214754871}
+  - component: {fileID: 1214754873}
+  m_Layer: 0
+  m_Name: MapAudio
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1214754871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1214754870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 987a255c653584f44b6428ffe5fa281a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MapAudio
+  mapName: WindMap
+  bgmVolume: 0.4
+--- !u!4 &1214754872
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1214754870}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.52342, y: 2.86413, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1214754873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1214754870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 130cca3d668ddce49b435409610fa741, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioManager
+  skillSEEE: {fileID: 8300000, guid: 78e721f394a21554eb3cae219f744b1c, type: 3}
+  skillSME: {fileID: 8300000, guid: bef7e4970e157544ca0e961d98566b3d, type: 3}
+  skillSCLS: {fileID: 0}
+  skillSOICT: {fileID: 8300000, guid: 9e5f12ebccabcb748aab433eaddfd105, type: 3}
+  sclsThrow: {fileID: 8300000, guid: 248ddf731594ba54d8757d5fa1d76d69, type: 3}
+  sclsBreak: {fileID: 8300000, guid: 925bcffc34e05044c8b33ab91974ca28, type: 3}
+  sclsPoison: {fileID: 8300000, guid: 57aeb1236cd9fe94191660ff42e3b2bb, type: 3}
+  ballHitPlayer: {fileID: 8300000, guid: 8f0c252626a687944a14f40817b2e757, type: 3}
+  ballHitObject: {fileID: 8300000, guid: 89256f08ac5e2d94eb8fe26d9b8f306b, type: 3}
+  bgmNormalMap: {fileID: 8300000, guid: aafd85877bfd9f64dbfad5b958814860, type: 3}
+  bgmMoonMap: {fileID: 8300000, guid: 80df8b6200076e44d8b3f08ef629682b, type: 3}
+  bgmWindMap: {fileID: 8300000, guid: 497e135c805dd9b40b702c0b534e3901, type: 3}
+  whistleStart: {fileID: 8300000, guid: 2bfdc4cca52f2fb408194a5f75418da1, type: 3}
+  whistleEnd: {fileID: 8300000, guid: 8bbfed5d3359adf4d9f8dede00439c10, type: 3}
+  goalCheer: {fileID: 8300000, guid: 4b38e53b86cb77f4f8ba0e448f67446a, type: 3}
 --- !u!1 &1247316982
 GameObject:
   m_ObjectHideFlags: 0
@@ -5044,7 +5178,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 763456691}
         m_TargetAssemblyTypeName: PauseMenuManager, Assembly-CSharp
         m_MethodName: ResumeGame
         m_Mode: 1
@@ -5249,3 +5383,5 @@ SceneRoots:
   - {fileID: 1819390557}
   - {fileID: 763456692}
   - {fileID: 558607180}
+  - {fileID: 1214754872}
+  - {fileID: 813756892}

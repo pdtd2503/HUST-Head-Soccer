@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class SOICTSkill : MonoBehaviour
 {
-    private const float STRAIGHT_SHOT_SPEED = 18f;
+    private const float STRAIGHT_SHOT_SPEED = 16f;
     private const float MAX_STRAIGHT_SHOT_TIME = 1.5f;
 
     public void UseSkill(PlayerController2D playerController, Rigidbody2D ballRb)
@@ -11,7 +11,7 @@ public class SOICTSkill : MonoBehaviour
         {
             return;
         }
-
+        AudioManager.Instance?.PlaySkillSOICT(); 
         SoictBallStraightShotRuntime straightShotRuntime =
             ballRb.GetComponent<SoictBallStraightShotRuntime>();
 

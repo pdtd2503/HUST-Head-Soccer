@@ -31,7 +31,7 @@ public class SCLSSkill : MonoBehaviour
             Debug.LogWarning("SCLS skill could not find opponent or player.");
             return;
         }
-
+        AudioManager.Instance?.PlaySkillSCLS();
         Time.timeScale = 0f;
 
         StartCoroutine(ThrowVialRoutine(playerController, opponentController));
@@ -39,6 +39,7 @@ public class SCLSSkill : MonoBehaviour
 
     private IEnumerator ThrowVialRoutine(PlayerController2D playerController, PlayerController2D opponentController)
     {
+        AudioManager.Instance?.PlaySkillSCLSThrow();
         GameObject vial = Instantiate(vialPrefab, playerController.transform.position, Quaternion.identity);
 
         SpriteRenderer sr = vial.GetComponentInChildren<SpriteRenderer>();
@@ -74,7 +75,7 @@ public class SCLSSkill : MonoBehaviour
 
             yield return null;
         }
-
+        AudioManager.Instance?.PlaySkillSCLSBreak();
         Destroy(vial);
 
         yield return StartCoroutine(ApplyShrinkEffect(opponentController));
@@ -115,7 +116,7 @@ class SclsShrinkRuntime : MonoBehaviour
         {
             StopCoroutine(shrinkCoroutine);
         }
-
+        AudioManager.Instance?.PlaySkillSCLSPoison();
         SpriteRenderer[] allRenderers = GetComponentsInChildren<SpriteRenderer>();
 
         if (allRenderers.Length > 0)

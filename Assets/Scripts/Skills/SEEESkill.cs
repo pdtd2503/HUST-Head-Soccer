@@ -22,8 +22,9 @@ public class SEEESkill : MonoBehaviour
     {
         Debug.LogWarning("SEEE: playerController hoặc ball là null!");
         return;
+        
     }
-
+    AudioManager.Instance?.PlaySkillSEEE();
     int attackDirection = playerController.GetAttackDirection();
     Vector3 targetPosition = playerController.transform.position;
     targetPosition.x = ball.position.x - attackDirection * BALL_OFFSET;

@@ -5,7 +5,7 @@ public class SMESkill : MonoBehaviour
 {
     private const float WALL_DURATION = 2f;
     private const float WALL_GOAL_OFFSET = 1f;
-    private const float APPEAR_DURATION = 0.45f; // thời gian mọc lên
+    private const float APPEAR_DURATION = 0.6f; // thời gian mọc lên
 
     private GameObject rockWallPrefab;
 
@@ -18,10 +18,12 @@ public class SMESkill : MonoBehaviour
             Debug.LogError("Không tìm thấy RockWall Prefab trong Resources!");
         }
     }
-
+    private const float GROUND_Y = 0f;
     public void UseSkill(PlayerController2D playerController, MatchManager matchManager)
     {
         if (playerController == null || matchManager == null) return;
+         
+        AudioManager.Instance?.PlaySkillSME(); 
 
         Transform ownGoal = GetOwnGoal(playerController, matchManager);
 
@@ -38,7 +40,7 @@ public class SMESkill : MonoBehaviour
             wallPosition.x += WALL_GOAL_OFFSET;
         else
             wallPosition.x -= WALL_GOAL_OFFSET;
-        wallPosition.y -= 1f; 
+        wallPosition.y = GROUND_Y;
         GameObject wall = Instantiate(rockWallPrefab, wallPosition, Quaternion.identity);
         Vector3 originalScale = wall.transform.localScale;
         wall.transform.localScale = new Vector3(originalScale.x, 0f, originalScale.z);
@@ -49,7 +51,7 @@ public class SMESkill : MonoBehaviour
     private IEnumerator RockWallRoutine(GameObject wall, Vector3 originalScale, Vector3 spawnPosition)
     {
         // Mọc lên theo từng bước (pixel style, không lerp mượt)
-        float[] steps = { 0.2f, 0.4f, 0.6f, 0.8f, 1.0f };
+        float[] steps = { 0f, 0.2f, 0.4f, 0.6f, 0.8f, 1f };
         float stepDelay = APPEAR_DURATION / steps.Length;
 
         foreach (float step in steps)

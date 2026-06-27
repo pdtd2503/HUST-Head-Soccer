@@ -1,0 +1,26 @@
+fileFormatVersion: 2
+guid: 130cca3d668ddce49b435409610fa741
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - skillSEEE: {fileID: 8300000, guid: 78e721f394a21554eb3cae219f744b1c, type: 3}
+  - skillSME: {fileID: 8300000, guid: bef7e4970e157544ca0e961d98566b3d, type: 3}
+  - skillSCLS: {instanceID: 0}
+  - skillSOICT: {fileID: 8300000, guid: 9e5f12ebccabcb748aab433eaddfd105, type: 3}
+  - sclsThrow: {fileID: 8300000, guid: 248ddf731594ba54d8757d5fa1d76d69, type: 3}
+  - sclsBreak: {fileID: 8300000, guid: 925bcffc34e05044c8b33ab91974ca28, type: 3}
+  - sclsPoison: {fileID: 8300000, guid: 57aeb1236cd9fe94191660ff42e3b2bb, type: 3}
+  - ballHitPlayer: {fileID: 8300000, guid: 8f0c252626a687944a14f40817b2e757, type: 3}
+  - ballHitObject: {fileID: 8300000, guid: 89256f08ac5e2d94eb8fe26d9b8f306b, type: 3}
+  - bgmNormalMap: {fileID: 8300000, guid: aafd85877bfd9f64dbfad5b958814860, type: 3}
+  - bgmMoonMap: {fileID: 8300000, guid: 80df8b6200076e44d8b3f08ef629682b, type: 3}
+  - bgmWindMap: {fileID: 8300000, guid: 497e135c805dd9b40b702c0b534e3901, type: 3}
+  - whistleStart: {fileID: 8300000, guid: 2bfdc4cca52f2fb408194a5f75418da1, type: 3}
+  - whistleEnd: {fileID: 8300000, guid: 8bbfed5d3359adf4d9f8dede00439c10, type: 3}
+  - goalCheer: {fileID: 8300000, guid: 4b38e53b86cb77f4f8ba0e448f67446a, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
