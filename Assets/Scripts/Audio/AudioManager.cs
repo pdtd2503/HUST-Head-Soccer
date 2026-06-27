@@ -25,9 +25,23 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip bgmWindMap;
 
     [Header("Match SFX")]
-    [SerializeField] private AudioClip whistleStart;  // còi bắt đầu trận
-    [SerializeField] private AudioClip whistleEnd;    // còi kết thúc trận
-    [SerializeField] private AudioClip goalCheer;     // tiếng hô ghi bàn
+    [SerializeField] private AudioClip whistleStart;  
+    [SerializeField] private AudioClip whistleEnd;    
+    [SerializeField] private AudioClip goalCheer;
+    [SerializeField] private AudioClip suddenDeathSound; 
+
+    [Header("UI SFX")]
+    [SerializeField] private AudioClip buttonClick;
+    
+    public void PlayButtonClick()
+    {
+        PlaySound(buttonClick);
+    }
+
+    public void PlaySuddenDeath()
+    {
+        PlaySound(suddenDeathSound);
+    }     
 
     public void PlayWhistleStart()
     {
@@ -77,47 +91,47 @@ public class AudioManager : MonoBehaviour
         bgmAudioSource.volume = 0.5f;
     }
 
-    public void PlaySkillSEEE()
+        public void PlaySkillSEEE(float volume = 1f)
     {
-        PlaySound(skillSEEE);
+        PlaySoundWithVolume(skillSEEE, volume);
     }
 
-    public void PlaySkillSME()
+    public void PlaySkillSME(float volume = 1f)
     {
-        PlaySound(skillSME);
+        PlaySoundWithVolume(skillSME, volume);
     }
 
-    public void PlaySkillSCLS()
+    public void PlaySkillSCLS(float volume = 1f)
     {
-        PlaySound(skillSCLS);
+        PlaySoundWithVolume(skillSCLS, volume);
     }
 
-    public void PlaySkillSOICT()
+    public void PlaySkillSOICT(float volume = 1f)
     {
-        PlaySound(skillSOICT);
+        PlaySoundWithVolume(skillSOICT, volume);
     }
 
-    public void PlaySkillSCLSThrow()
+    public void PlaySkillSCLSThrow(float volume = 1f)
     {
-        PlaySound(sclsThrow);
+        PlaySoundWithVolume(sclsThrow, volume);
     }
 
-    public void PlaySkillSCLSBreak()
+    public void PlaySkillSCLSBreak(float volume = 1f)
     {
-        PlaySound(sclsBreak);
+        PlaySoundWithVolume(sclsBreak, volume);
     }
 
-    public void PlaySkillSCLSPoison()
+    public void PlaySkillSCLSPoison(float volume = 1f)
     {
-        PlaySound(sclsPoison);
+        PlaySoundWithVolume(sclsPoison, volume);
     }
 
-    public void PlayBallHitPlayer(float volume = 1f)
+    public void PlayBallHitPlayer(float volume = 1.5f)
     {
         PlaySoundWithVolume(ballHitPlayer, volume);
     }
 
-    public void PlayBallHitObject(float volume = 1f)
+    public void PlayBallHitObject(float volume = 1.5f)
     {
         PlaySoundWithVolume(ballHitObject, volume);
     }

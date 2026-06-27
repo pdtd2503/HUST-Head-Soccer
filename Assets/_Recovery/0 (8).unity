@@ -212,6 +212,7 @@ GameObject:
   - component: {fileID: 109993504}
   - component: {fileID: 109993503}
   - component: {fileID: 109993502}
+  - component: {fileID: 109993505}
   m_Layer: 5
   m_Name: ExitButton
   m_TagString: Untagged
@@ -333,6 +334,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 109993500}
   m_CullTransparentMesh: 1
+--- !u!114 &109993505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 109993500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c29df1b9dd8f0143b935f628c6b4d73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
 --- !u!1 &250384400
 GameObject:
   m_ObjectHideFlags: 0
@@ -825,6 +838,7 @@ GameObject:
   - component: {fileID: 410813043}
   - component: {fileID: 410813042}
   - component: {fileID: 410813041}
+  - component: {fileID: 410813044}
   m_Layer: 5
   m_Name: PauseButton
   m_TagString: Untagged
@@ -946,6 +960,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410813039}
   m_CullTransparentMesh: 1
+--- !u!114 &410813044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 410813039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c29df1b9dd8f0143b935f628c6b4d73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
 --- !u!1 &442612402
 GameObject:
   m_ObjectHideFlags: 0
@@ -3939,6 +3965,7 @@ GameObject:
   - component: {fileID: 1401546886}
   - component: {fileID: 1401546885}
   - component: {fileID: 1401546884}
+  - component: {fileID: 1401546887}
   m_Layer: 5
   m_Name: ResumeButton
   m_TagString: Untagged
@@ -4060,6 +4087,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1401546882}
   m_CullTransparentMesh: 1
+--- !u!114 &1401546887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1401546882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c29df1b9dd8f0143b935f628c6b4d73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
 --- !u!1 &1457519508
 GameObject:
   m_ObjectHideFlags: 0

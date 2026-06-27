@@ -154,65 +154,6 @@ Transform:
   - {fileID: 1880900650}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &45377118
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 45377120}
-  - component: {fileID: 45377119}
-  m_Layer: 0
-  m_Name: AudioManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &45377119
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 45377118}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 130cca3d668ddce49b435409610fa741, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AudioManager
-  skillSEEE: {fileID: 8300000, guid: 78e721f394a21554eb3cae219f744b1c, type: 3}
-  skillSME: {fileID: 8300000, guid: bef7e4970e157544ca0e961d98566b3d, type: 3}
-  skillSCLS: {fileID: 0}
-  skillSOICT: {fileID: 8300000, guid: 9e5f12ebccabcb748aab433eaddfd105, type: 3}
-  sclsThrow: {fileID: 8300000, guid: 248ddf731594ba54d8757d5fa1d76d69, type: 3}
-  sclsBreak: {fileID: 8300000, guid: 925bcffc34e05044c8b33ab91974ca28, type: 3}
-  sclsPoison: {fileID: 8300000, guid: 57aeb1236cd9fe94191660ff42e3b2bb, type: 3}
-  ballHitPlayer: {fileID: 8300000, guid: 8f0c252626a687944a14f40817b2e757, type: 3}
-  ballHitObject: {fileID: 8300000, guid: 89256f08ac5e2d94eb8fe26d9b8f306b, type: 3}
-  bgmNormalMap: {fileID: 8300000, guid: aafd85877bfd9f64dbfad5b958814860, type: 3}
-  bgmMoonMap: {fileID: 8300000, guid: 80df8b6200076e44d8b3f08ef629682b, type: 3}
-  bgmWindMap: {fileID: 8300000, guid: 497e135c805dd9b40b702c0b534e3901, type: 3}
-  whistleStart: {fileID: 8300000, guid: 2bfdc4cca52f2fb408194a5f75418da1, type: 3}
-  whistleEnd: {fileID: 8300000, guid: 8bbfed5d3359adf4d9f8dede00439c10, type: 3}
-  goalCheer: {fileID: 8300000, guid: 4b38e53b86cb77f4f8ba0e448f67446a, type: 3}
---- !u!4 &45377120
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 45377118}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 817.2108, y: 512.1068, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &67811727
 GameObject:
   m_ObjectHideFlags: 0
@@ -453,51 +394,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1275997954}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &362376561
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 362376563}
-  - component: {fileID: 362376562}
-  m_Layer: 0
-  m_Name: ButtonAudio
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &362376562
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 362376561}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c29df1b9dd8f0143b935f628c6b4d73, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ButtonAudio
-  buttonClickSound: {fileID: 8300000, guid: bd4244c760230d74fa421de6dd2db65e, type: 3}
---- !u!4 &362376563
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 362376561}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 492.9722, y: 185.38895, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &387294265
 GameObject:
@@ -3007,6 +2903,7 @@ GameObject:
   - component: {fileID: 1148775842}
   - component: {fileID: 1148775841}
   - component: {fileID: 1148775840}
+  - component: {fileID: 1148775843}
   m_Layer: 5
   m_Name: ResumeButton
   m_TagString: Untagged
@@ -3127,6 +3024,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1148775838}
   m_CullTransparentMesh: 1
+--- !u!114 &1148775843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1148775838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c29df1b9dd8f0143b935f628c6b4d73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
 --- !u!1 &1162805070
 GameObject:
   m_ObjectHideFlags: 0
@@ -3248,7 +3157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapAudio
   mapName: NormalMap
-  bgmVolume: 0.5
+  bgmVolume: 0.2
 --- !u!4 &1182490103
 Transform:
   m_ObjectHideFlags: 0
@@ -4107,6 +4016,7 @@ GameObject:
   - component: {fileID: 1398273895}
   - component: {fileID: 1398273894}
   - component: {fileID: 1398273893}
+  - component: {fileID: 1398273896}
   m_Layer: 5
   m_Name: ExitButton
   m_TagString: Untagged
@@ -4227,6 +4137,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1398273891}
   m_CullTransparentMesh: 1
+--- !u!114 &1398273896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1398273891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c29df1b9dd8f0143b935f628c6b4d73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
 --- !u!1 &1462247931
 GameObject:
   m_ObjectHideFlags: 0
@@ -5224,6 +5146,7 @@ GameObject:
   - component: {fileID: 2082016750}
   - component: {fileID: 2082016749}
   - component: {fileID: 2082016748}
+  - component: {fileID: 2082016752}
   m_Layer: 5
   m_Name: PauseButton
   m_TagString: Untagged
@@ -5344,6 +5267,18 @@ RectTransform:
   m_AnchoredPosition: {x: -150, y: -50}
   m_SizeDelta: {x: 300, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2082016752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2082016747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c29df1b9dd8f0143b935f628c6b4d73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
 --- !u!1 &2135521384
 GameObject:
   m_ObjectHideFlags: 0
@@ -5499,5 +5434,3 @@ SceneRoots:
   - {fileID: 322952309}
   - {fileID: 1392958120}
   - {fileID: 1182490103}
-  - {fileID: 45377120}
-  - {fileID: 362376563}

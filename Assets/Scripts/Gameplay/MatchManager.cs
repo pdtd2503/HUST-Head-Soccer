@@ -539,7 +539,7 @@ public class MatchManager : MonoBehaviour
 
         FreezeAllBodies();
         UnlockGoalTriggers();
-
+        AudioManager.Instance?.PlayWhistleEnd();
         SaveMatchResult();
 
         Debug.Log(
@@ -588,6 +588,8 @@ public class MatchManager : MonoBehaviour
         StopAllBodies();
         ResetPositions();
         UnlockGoalTriggers();
+
+        AudioManager.Instance?.PlaySuddenDeath();
 
         Debug.Log("Tournament match is tied. Sudden Death started.");
     }

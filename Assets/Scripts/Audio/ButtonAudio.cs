@@ -1,46 +1,25 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
-public class ButtonAudio : MonoBehaviour
+[RequireComponent(typeof(Button))]
+public class UIButtonSound : MonoBehaviour
 {
-    [SerializeField] private AudioClip buttonClickSound;
-
-    private AudioSource audioSource;
+    private Button button;
 
     private void Awake()
     {
-        audioSource = gameObject.AddComponent<AudioSource>();
-        audioSource.playOnAwake = false;
+        button = GetComponent<Button>();
+        button.onClick.AddListener(PlayClickSound);
     }
 
-    private void Start()
+    private void PlayClickSound()
     {
-        StartCoroutine(RegisterAllButtons());
+        AudioManager.Instance?.PlayButtonClick();
     }
 
-    private IEnumerator RegisterAllButtons()
+    private void OnDestroy()
     {
-        // Chờ 2 frame để đảm bảo tất cả object đã được khởi tạo xong
-        yield return null;
-        yield return null;
-
-        Button[] allButtons = Resources.FindObjectsOfTypeAll<Button>();
-        Debug.Log($"ButtonAudio tìm thấy {allButtons.Length} buttons");
-
-        foreach (Button btn in allButtons)
-        {
-            if (btn.gameObject.scene.isLoaded)
-            {
-                btn.onClick.AddListener(() =>
-                {
-                    if (buttonClickSound != null && audioSource != null)
-                    {
-                        audioSource.PlayOneShot(buttonClickSound);
-                    }
-                });
-                Debug.Log($"Đã gắn audio cho: {btn.gameObject.name}");
-            }
-        }
+        if (button != null)
+            button.onClick.RemoveListener(PlayClickSound);
     }
 }

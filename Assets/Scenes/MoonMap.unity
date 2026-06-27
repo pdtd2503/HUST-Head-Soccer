@@ -226,6 +226,7 @@ GameObject:
   - component: {fileID: 109993504}
   - component: {fileID: 109993503}
   - component: {fileID: 109993502}
+  - component: {fileID: 109993505}
   m_Layer: 5
   m_Name: ExitButton
   m_TagString: Untagged
@@ -346,51 +347,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 109993500}
   m_CullTransparentMesh: 1
---- !u!1 &166605925
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 166605927}
-  - component: {fileID: 166605926}
-  m_Layer: 0
-  m_Name: ButtonAudio
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &166605926
+--- !u!114 &109993505
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 166605925}
+  m_GameObject: {fileID: 109993500}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1c29df1b9dd8f0143b935f628c6b4d73, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ButtonAudio
-  buttonClickSound: {fileID: 8300000, guid: bd4244c760230d74fa421de6dd2db65e, type: 3}
---- !u!4 &166605927
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 166605925}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 492.9722, y: 185.38895, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
 --- !u!1 &250384400
 GameObject:
   m_ObjectHideFlags: 0
@@ -883,6 +851,7 @@ GameObject:
   - component: {fileID: 410813043}
   - component: {fileID: 410813042}
   - component: {fileID: 410813041}
+  - component: {fileID: 410813044}
   m_Layer: 5
   m_Name: PauseButton
   m_TagString: Untagged
@@ -1003,6 +972,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410813039}
   m_CullTransparentMesh: 1
+--- !u!114 &410813044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 410813039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c29df1b9dd8f0143b935f628c6b4d73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
 --- !u!1 &442612402
 GameObject:
   m_ObjectHideFlags: 0
@@ -3572,65 +3553,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BallAudio
   minVelocity: 1
   maxVelocity: 15
---- !u!1 &1243775103
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1243775105}
-  - component: {fileID: 1243775106}
-  m_Layer: 0
-  m_Name: AudioManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1243775105
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1243775103}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.52342, y: 2.86413, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1243775106
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1243775103}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 130cca3d668ddce49b435409610fa741, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AudioManager
-  skillSEEE: {fileID: 8300000, guid: 78e721f394a21554eb3cae219f744b1c, type: 3}
-  skillSME: {fileID: 8300000, guid: bef7e4970e157544ca0e961d98566b3d, type: 3}
-  skillSCLS: {fileID: 0}
-  skillSOICT: {fileID: 8300000, guid: 9e5f12ebccabcb748aab433eaddfd105, type: 3}
-  sclsThrow: {fileID: 8300000, guid: 248ddf731594ba54d8757d5fa1d76d69, type: 3}
-  sclsBreak: {fileID: 8300000, guid: 925bcffc34e05044c8b33ab91974ca28, type: 3}
-  sclsPoison: {fileID: 8300000, guid: 57aeb1236cd9fe94191660ff42e3b2bb, type: 3}
-  ballHitPlayer: {fileID: 8300000, guid: 8f0c252626a687944a14f40817b2e757, type: 3}
-  ballHitObject: {fileID: 8300000, guid: 89256f08ac5e2d94eb8fe26d9b8f306b, type: 3}
-  bgmNormalMap: {fileID: 8300000, guid: aafd85877bfd9f64dbfad5b958814860, type: 3}
-  bgmMoonMap: {fileID: 8300000, guid: 80df8b6200076e44d8b3f08ef629682b, type: 3}
-  bgmWindMap: {fileID: 8300000, guid: 497e135c805dd9b40b702c0b534e3901, type: 3}
-  whistleStart: {fileID: 8300000, guid: 2bfdc4cca52f2fb408194a5f75418da1, type: 3}
-  whistleEnd: {fileID: 8300000, guid: 8bbfed5d3359adf4d9f8dede00439c10, type: 3}
-  goalCheer: {fileID: 8300000, guid: 4b38e53b86cb77f4f8ba0e448f67446a, type: 3}
 --- !u!1 &1348247391
 GameObject:
   m_ObjectHideFlags: 0
@@ -3797,6 +3719,7 @@ GameObject:
   - component: {fileID: 1401546886}
   - component: {fileID: 1401546885}
   - component: {fileID: 1401546884}
+  - component: {fileID: 1401546887}
   m_Layer: 5
   m_Name: ResumeButton
   m_TagString: Untagged
@@ -3917,6 +3840,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1401546882}
   m_CullTransparentMesh: 1
+--- !u!114 &1401546887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1401546882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c29df1b9dd8f0143b935f628c6b4d73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIButtonSound
 --- !u!1 &1457519508
 GameObject:
   m_ObjectHideFlags: 0
@@ -5389,6 +5324,4 @@ SceneRoots:
   - {fileID: 1507326165}
   - {fileID: 1898967434}
   - {fileID: 1153911276}
-  - {fileID: 1243775105}
   - {fileID: 803175901}
-  - {fileID: 166605927}
