@@ -50,15 +50,14 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
+            return;
         }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
 
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
@@ -66,11 +65,12 @@ public class AudioManager : MonoBehaviour
             audioSource = gameObject.AddComponent<AudioSource>();
         }
 
+        audioSource.playOnAwake = false;
+
         realtimeAudioSource = gameObject.AddComponent<AudioSource>();
         realtimeAudioSource.ignoreListenerPause = true;
         realtimeAudioSource.playOnAwake = false;
 
-        // Khởi tạo bgmAudioSource trong Awake
         bgmAudioSource = gameObject.AddComponent<AudioSource>();
         bgmAudioSource.loop = true;
         bgmAudioSource.playOnAwake = false;
@@ -139,6 +139,11 @@ public class AudioManager : MonoBehaviour
                 break;
         }
 
+        if (bgmAudioSource == null)
+        {
+            return;
+        }
+        
         if (clip == null)
         {
             Debug.LogWarning($"AudioManager: BGM cho map '{mapName}' chưa được gắn!");
@@ -153,11 +158,22 @@ public class AudioManager : MonoBehaviour
 
     public void StopBGM()
     {
+        if (bgmAudioSource == null)
+        {
+            return;
+        }
+
         bgmAudioSource.Stop();
+        bgmAudioSource.clip = null;
     }
 
     public void SetBGMVolume(float volume)
     {
+        if (bgmAudioSource == null)
+        {
+            return;
+        }
+
         bgmAudioSource.volume = Mathf.Clamp01(volume);
     }
 
@@ -181,5 +197,13 @@ public class AudioManager : MonoBehaviour
         }
 
         realtimeAudioSource.PlayOneShot(clip, volume);
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            Instance = null;
+        }
     }
 }

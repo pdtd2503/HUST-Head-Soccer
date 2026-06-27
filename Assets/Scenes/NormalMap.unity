@@ -760,7 +760,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43463c7c6707d6a48b3eb27f1ec9aae5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FootKinematicKickTest
-  kickKey: 32
+  kickKey: 99
   player: {fileID: 1275997954}
   kickDirection: 1
   startLocalPosition: {x: -0.3, y: -0.7}
@@ -3077,7 +3077,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 322952308}
         m_TargetAssemblyTypeName: PauseMenuManager, Assembly-CSharp
         m_MethodName: ResumeGame
         m_Mode: 1
@@ -3248,7 +3248,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapAudio
   mapName: NormalMap
-  bgmVolume: 0.099
+  bgmVolume: 0.5
 --- !u!4 &1182490103
 Transform:
   m_ObjectHideFlags: 0
@@ -3335,7 +3335,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0.5
   m_AngularDamping: 0.2
-  m_GravityScale: 1.5
+  m_GravityScale: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -3559,7 +3559,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43463c7c6707d6a48b3eb27f1ec9aae5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FootKinematicKickTest
-  kickKey: 13
+  kickKey: 112
   player: {fileID: 1972683838}
   kickDirection: 1
   startLocalPosition: {x: 0.3, y: -0.7}
@@ -4177,7 +4177,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 322952308}
         m_TargetAssemblyTypeName: PauseMenuManager, Assembly-CSharp
         m_MethodName: ExitToMainMenu
         m_Mode: 1
