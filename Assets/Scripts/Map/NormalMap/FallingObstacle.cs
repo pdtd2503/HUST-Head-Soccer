@@ -1,76 +1,82 @@
 using UnityEngine;
 
-public class FallingObstacle :
-MonoBehaviour
+public class FallingObstacle : MonoBehaviour
 {
     bool landed;
 
     public float disappearTime = 5f;
 
-    void OnCollisionEnter2D(
-        Collision2D col
-    )
+    [Header("Stun Effect")]
+    [HideInInspector] public GameObject starPrefab;
+    [SerializeField] private int starCount = 3;
+    [SerializeField] private float orbitRadius = 0.5f;
+    [SerializeField] private float orbitSpeed = 180f;
+    [SerializeField] private float starHeight = 1.2f;
+    [HideInInspector] public AudioClip hitSound; // truyền từ RainSpawner
+    void OnCollisionEnter2D(Collision2D col)
     {
-        if (landed)
-            return;
+        if (landed) return;
 
-        //--------------------------------
         // PLAYER
-        //--------------------------------
+        if (col.gameObject.CompareTag("Player"))
+    {
+    AudioManager.Instance?.PlayObstacleHit(); 
+    Debug.Log("FallingObstacle: Chạm player!");
+    
+    PlayerController2D player = col.gameObject.GetComponent<PlayerController2D>();
 
-        if (
-            col.gameObject
-            .CompareTag("Player")
-        )
+        if (player != null)
         {
-            PlayerController2D player =
-                col.gameObject
-                .GetComponent<PlayerController2D>();
+            Debug.Log("FallingObstacle: Tìm thấy PlayerController2D!");
+            
+            player.Stun(0.5f);
 
-            if (player != null)
+            StunEffectRunner runner = player.GetComponent<StunEffectRunner>();
+            if (runner == null)
             {
-                player.Stun(1f);
+                runner = player.gameObject.AddComponent<StunEffectRunner>();
+                Debug.Log("FallingObstacle: Tạo StunEffectRunner mới!");
             }
 
-            Destroy(gameObject);
+            Debug.Log($"FallingObstacle: starPrefab = {starPrefab}");
 
-            return;
+            runner.PlayStunEffect(
+                player.transform,
+                0.5f,
+                starPrefab,
+                starCount,
+                orbitRadius,
+                orbitSpeed,
+                starHeight
+            );
+        }
+        else
+        {
+            Debug.LogWarning("FallingObstacle: Không tìm thấy PlayerController2D!");
         }
 
-        //--------------------------------
-        // BALL
-        //--------------------------------
+        Destroy(gameObject);
+        return;
+    }
 
-        if (
-            col.gameObject
-            .CompareTag("Ball")
-        )
+        // BALL
+        if (col.gameObject.CompareTag("Ball"))
         {
-            Rigidbody2D rb =
-                col.gameObject
-                .GetComponent<Rigidbody2D>();
+            AudioManager.Instance?.PlayObstacleHit();
+            Rigidbody2D rb = col.gameObject.GetComponent<Rigidbody2D>();
 
             if (rb != null)
             {
-                rb.linearVelocity =
-                    new Vector2(
-                        -rb.linearVelocity.x,
-                        10
-                    );
+                rb.linearVelocity = new Vector2(-rb.linearVelocity.x, 10);
             }
 
             return;
         }
 
-        //--------------------------------
         // GROUND
-        //--------------------------------
-
-        if (
-            col.gameObject
-            .CompareTag("Ground")
-        )
+        if (col.gameObject.CompareTag("Ground"))
         {
+            AudioManager.Instance?.PlayObstacleHit();
             Land();
         }
     }
@@ -79,15 +85,9 @@ MonoBehaviour
     {
         landed = true;
 
-        Rigidbody2D rb =
-            GetComponent<Rigidbody2D>();
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        rb.bodyType = RigidbodyType2D.Static;
 
-        rb.bodyType =
-            RigidbodyType2D.Static;
-
-        Destroy(
-            gameObject,
-            disappearTime
-        );
+        Destroy(gameObject, disappearTime);
     }
 }

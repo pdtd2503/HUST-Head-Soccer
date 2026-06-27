@@ -2634,7 +2634,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 20
   m_MaskInteraction: 0
   m_Sprite: {fileID: 786688332881820459, guid: e64f6f67c8d2d6040a6390f8206ed877, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -3100,7 +3100,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 20
   m_MaskInteraction: 0
   m_Sprite: {fileID: 786688332881820459, guid: e64f6f67c8d2d6040a6390f8206ed877, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -3965,6 +3965,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1392958120}
   - component: {fileID: 1392958119}
+  - component: {fileID: 1392958121}
   m_Layer: 0
   m_Name: ObstacleSpawner
   m_TagString: Untagged
@@ -3985,6 +3986,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RainSpawner
   obstacle: {fileID: 5700401476099651409, guid: a6532d93846084c498e65c98380be5ad, type: 3}
+  starPrefab: {fileID: 7814119856340406872, guid: 8958f295f864aa144bc66163adf6b054, type: 3}
   leftX: -8
   rightX: 8
   spawnY: 6
@@ -4004,6 +4006,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1392958121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1392958118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5524d22f1df63da48961bf85a1922fb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FallingObstacle
+  disappearTime: 5
+  starPrefab: {fileID: 7814119856340406872, guid: 8958f295f864aa144bc66163adf6b054, type: 3}
+  starCount: 3
+  orbitRadius: 0.5
+  orbitSpeed: 180
+  starHeight: 1.2
+  hitSound: {fileID: 0}
 --- !u!1 &1398273891
 GameObject:
   m_ObjectHideFlags: 0

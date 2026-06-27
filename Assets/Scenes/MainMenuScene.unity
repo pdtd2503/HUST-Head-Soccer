@@ -1141,6 +1141,7 @@ MonoBehaviour:
   goalCheer: {fileID: 8300000, guid: 4b38e53b86cb77f4f8ba0e448f67446a, type: 3}
   suddenDeathSound: {fileID: 8300000, guid: 4260fd4f69f7f5e448208970df086d54, type: 3}
   buttonClick: {fileID: 8300000, guid: bd4244c760230d74fa421de6dd2db65e, type: 3}
+  obstacleHit: {fileID: 8300000, guid: 29f95b6b3fdb25742bdbca420d1cc97b, type: 3}
 --- !u!4 &1976016808
 Transform:
   m_ObjectHideFlags: 0

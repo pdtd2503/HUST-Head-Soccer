@@ -33,6 +33,14 @@ public class AudioManager : MonoBehaviour
     [Header("UI SFX")]
     [SerializeField] private AudioClip buttonClick;
     
+    [Header("Obstacle SFX")]
+    [SerializeField] private AudioClip obstacleHit;
+
+    public void PlayObstacleHit()
+    {
+        PlaySound(obstacleHit);
+    }
+    
     public void PlayButtonClick()
     {
         PlaySound(buttonClick);
