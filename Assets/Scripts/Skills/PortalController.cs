@@ -18,19 +18,77 @@ public class PortalController : MonoBehaviour
         StartCoroutine(TeleportSequenceRoutine(playerController, targetPosition, portalPrefab, onComplete));
     }
 
-    private IEnumerator TeleportSequenceRoutine(PlayerController2D playerController, Vector3 targetPosition, GameObject portalPrefab, System.Action onComplete)
+   private IEnumerator TeleportSequenceRoutine(PlayerController2D playerController, Vector3 targetPosition, GameObject portalPrefab, System.Action onComplete)
+{
+    yield return new WaitForSecondsRealtime(PORTAL_DURATION);
+
+    playerController.gameObject.SetActive(false);
+
+    // Kiểm tra vị trí đích có hợp lệ không
+    Vector3 safePosition = GetSafePosition(playerController, targetPosition);
+
+    playerController.transform.position = safePosition;
+
+    GameObject portalB = Instantiate(portalPrefab, safePosition, Quaternion.identity);
+    PortalController portalBController = portalB.GetComponent<PortalController>();
+
+    portalBController.StartCoroutine(portalBController.FinishTeleport(playerController, onComplete));
+
+    Destroy(gameObject);
+}
+
+    private Vector3 GetSafePosition(PlayerController2D playerController, Vector3 targetPosition)
     {
-        yield return new WaitForSecondsRealtime(PORTAL_DURATION);
+        // Lấy kích thước collider của player
+        Collider2D col = playerController.GetComponent<Collider2D>();
+        float radius = col != null ? col.bounds.extents.x : 0.5f;
 
-        playerController.gameObject.SetActive(false);
-        playerController.transform.position = targetPosition;
+        // Kiểm tra vị trí đích có bị chồng lên vật cản không
+        Collider2D[] hits = Physics2D.OverlapCircleAll(targetPosition, radius);
 
-        GameObject portalB = Instantiate(portalPrefab, targetPosition, Quaternion.identity);
-        PortalController portalBController = portalB.GetComponent<PortalController>();
+        bool isClear = true;
+        foreach (Collider2D hit in hits)
+        {
+            // Bỏ qua chính player và trigger
+            if (hit.isTrigger) continue;
+            if (hit.gameObject == playerController.gameObject) continue;
 
-        portalBController.StartCoroutine(portalBController.FinishTeleport(playerController, onComplete));
+            isClear = false;
+            break;
+        }
 
-        Destroy(gameObject);
+        if (isClear) return targetPosition;
+
+        // Nếu vị trí đích bị chặn, thử tìm vị trí an toàn gần đó
+        Vector3[] fallbackOffsets = {
+            new Vector3(1f, 0f, 0f),
+            new Vector3(-1f, 0f, 0f),
+            new Vector3(0f, 1f, 0f),
+            new Vector3(1.5f, 0f, 0f),
+            new Vector3(-1.5f, 0f, 0f),
+        };
+
+        foreach (Vector3 offset in fallbackOffsets)
+        {
+            Vector3 fallbackPos = targetPosition + offset;
+            Collider2D[] fallbackHits = Physics2D.OverlapCircleAll(fallbackPos, radius);
+
+            bool fallbackClear = true;
+            foreach (Collider2D hit in fallbackHits)
+            {
+                if (hit.isTrigger) continue;
+                if (hit.gameObject == playerController.gameObject) continue;
+
+                fallbackClear = false;
+                break;
+            }
+
+            if (fallbackClear) return fallbackPos;
+        }
+
+        // Nếu không tìm được vị trí an toàn, giữ nguyên vị trí cũ
+        Debug.LogWarning("SEEE: Không tìm được vị trí an toàn, giữ nguyên vị trí cũ!");
+        return playerController.transform.position;
     }
 
     public IEnumerator FinishTeleport(PlayerController2D playerController, System.Action onComplete)

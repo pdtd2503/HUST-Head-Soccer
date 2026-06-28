@@ -1138,7 +1138,7 @@ MonoBehaviour:
   bgmWindMap: {fileID: 8300000, guid: 497e135c805dd9b40b702c0b534e3901, type: 3}
   whistleStart: {fileID: 8300000, guid: 2bfdc4cca52f2fb408194a5f75418da1, type: 3}
   whistleEnd: {fileID: 8300000, guid: 8bbfed5d3359adf4d9f8dede00439c10, type: 3}
-  goalCheer: {fileID: 8300000, guid: 4b38e53b86cb77f4f8ba0e448f67446a, type: 3}
+  goalCheer: {fileID: 8300000, guid: 66add49bb2b13d146a8e3d97ba7d99f1, type: 3}
   suddenDeathSound: {fileID: 8300000, guid: 4260fd4f69f7f5e448208970df086d54, type: 3}
   buttonClick: {fileID: 8300000, guid: bd4244c760230d74fa421de6dd2db65e, type: 3}
   obstacleHit: {fileID: 8300000, guid: 29f95b6b3fdb25742bdbca420d1cc97b, type: 3}
