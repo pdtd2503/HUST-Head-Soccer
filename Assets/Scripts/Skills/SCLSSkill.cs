@@ -163,12 +163,20 @@ class SclsShrinkRuntime : MonoBehaviour
 
     private IEnumerator ShrinkDurationAndRestoreRoutine(float duration, float scaleMultiplier, PlayerController2D playerController)
     {
+        // Bật trạng thái shrink
         if (playerController != null)
         {
+            playerController.SetShrunken(true);
             playerController.SetTemporarySpeedStars(1, duration);
         }
 
         yield return new WaitForSeconds(duration);
+
+        // Tắt trạng thái shrink khi hết hiệu ứng
+        if (playerController != null)
+        {
+            playerController.SetShrunken(false);
+        }
 
         float[] stepsBack = { 0.55f, 0.75f, 0.65f, 0.85f, 1.0f };
 

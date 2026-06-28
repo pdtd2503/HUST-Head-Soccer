@@ -98,6 +98,18 @@ public class PlayerController2D : MonoBehaviour
         ReadMoveInput();
         ReadJumpInput();
     }
+    
+    private bool isShrunken = false;
+
+    public bool IsShrunken()
+    {
+        return isShrunken;
+    }
+
+    public void SetShrunken(bool value)
+    {
+        isShrunken = value;
+    }
 
     private void FixedUpdate()
     {

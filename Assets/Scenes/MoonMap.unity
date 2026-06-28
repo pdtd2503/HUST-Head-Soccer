@@ -2747,8 +2747,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 987a255c653584f44b6428ffe5fa281a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapAudio
+  audioType: 0
   mapName: MoonMap
-  bgmVolume: 0.5
+  bgmVolume: 0.6
 --- !u!4 &803175901
 Transform:
   m_ObjectHideFlags: 0

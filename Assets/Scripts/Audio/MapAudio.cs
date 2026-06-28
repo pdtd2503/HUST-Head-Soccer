@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class MapAudio : MonoBehaviour
 {
+    public enum AudioType { Map, Menu }
+
+    [SerializeField] private AudioType audioType = AudioType.Map;
     [SerializeField] private string mapName;
 
     [Range(0f, 1f)]
@@ -9,27 +12,19 @@ public class MapAudio : MonoBehaviour
 
     private void Start()
     {
-        if (AudioManager.Instance == null)
-        {
-            return;
-        }
+        if (AudioManager.Instance == null) return;
 
         AudioManager.Instance.SetBGMVolume(bgmVolume);
-        AudioManager.Instance.PlayBGM(mapName);
+
+        if (audioType == AudioType.Menu)
+        {
+            AudioManager.Instance.PlayMenuBGM();
+        }
+        else
+        {
+            AudioManager.Instance.PlayBGM(mapName);
+        }
     }
 
-    private void OnDestroy()
-    {
-        if (!Application.isPlaying)
-        {
-            return;
-        }
-
-        if (AudioManager.Instance == null)
-        {
-            return;
-        }
-
-        AudioManager.Instance.StopBGM();
-    }
+    // Bỏ OnDestroy hoàn toàn — không stop BGM khi chuyển scene
 }

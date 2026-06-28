@@ -23,6 +23,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip bgmNormalMap;
     [SerializeField] private AudioClip bgmMoonMap;
     [SerializeField] private AudioClip bgmWindMap;
+    [SerializeField] private AudioClip bgmMenu; 
 
     [Header("Match SFX")]
     [SerializeField] private AudioClip whistleStart;  
@@ -59,6 +60,13 @@ public class AudioManager : MonoBehaviour
     public void PlayWhistleEnd()
     {
         PlaySound(whistleEnd);
+    }
+
+    public void PlayMenuBGM()
+    {
+        if (bgmAudioSource.clip == bgmMenu) return;
+        bgmAudioSource.clip = bgmMenu;
+        bgmAudioSource.Play();
     }
 
     public void PlayGoalCheer()

@@ -122,6 +122,12 @@ public class PlayerSkillController : MonoBehaviour
             return false;
         }
 
+        if (playerController.IsShrunken())
+        {
+            Debug.Log($"{name} đang bị shrink, không thể dùng skill!");
+            return false;
+        }
+
         if (skillCharge < currentCooldownDuration)
         {
             float remainingTime = currentCooldownDuration - skillCharge;
