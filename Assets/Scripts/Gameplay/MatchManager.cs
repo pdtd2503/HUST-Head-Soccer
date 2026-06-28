@@ -30,6 +30,8 @@ public class MatchManager : MonoBehaviour
 
     [Header("UI")]
     public TMP_Text goalText;
+    public GoalEffectManager goalEffectManager;
+    public CameraShake cameraShake;
 
     private float timer;
 
@@ -142,6 +144,16 @@ public class MatchManager : MonoBehaviour
         {
             rightGoalTrigger.matchManager = this;
         }
+
+         if (goalEffectManager == null)
+        {
+            goalEffectManager = FindFirstObjectByType<GoalEffectManager>();
+        }
+
+        if (cameraShake == null)
+        {
+            cameraShake = FindFirstObjectByType<CameraShake>();
+        }
     }
 
     private void EndMatch()
@@ -249,13 +261,28 @@ public class MatchManager : MonoBehaviour
 
     private void ShowGoalText(int scoringPlayer)
     {
-        if (goalText == null)
+        if (cameraShake != null)
         {
-            return;
+            cameraShake.Shake();
+        }
+        else
+        {
+            Debug.LogWarning("CameraShake is not assigned in MatchManager.");
         }
 
-        goalText.text = "Goallllllllll";
-        goalText.gameObject.SetActive(true);
+        if (goalEffectManager != null)
+        {
+            goalEffectManager.PlayGoalEffect();
+        }
+        else
+        {
+            Debug.LogWarning("GoalEffectManager is not assigned in MatchManager.");
+        }
+
+        if (goalText != null)
+        {
+            goalText.gameObject.SetActive(false);
+        }
     }
 
     private void HideGoalText()

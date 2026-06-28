@@ -2623,8 +2623,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'SKILL: TELEPORT'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f08bfade17d406a4f8c72787e172af48, type: 2}
-  m_sharedMaterial: {fileID: 8368288299209998243, guid: f08bfade17d406a4f8c72787e172af48, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2648,8 +2648,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25
-  m_fontSizeBase: 25
+  m_fontSize: 35
+  m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2907,8 +2907,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'SKILL: THUNDER SHOT'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f08bfade17d406a4f8c72787e172af48, type: 2}
-  m_sharedMaterial: {fileID: 8368288299209998243, guid: f08bfade17d406a4f8c72787e172af48, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2932,8 +2932,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25
-  m_fontSizeBase: 25
+  m_fontSize: 35
+  m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
