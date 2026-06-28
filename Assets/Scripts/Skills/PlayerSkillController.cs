@@ -5,10 +5,10 @@ public class PlayerSkillController : MonoBehaviour
     private const KeyCode PLAYER_1_SKILL_KEY = KeyCode.V;
     private const KeyCode PLAYER_2_SKILL_KEY = KeyCode.O;
 
-    private const float SOICT_COOLDOWN = 1f;
-    private const float SME_COOLDOWN = 1f;
-    private const float SCLS_COOLDOWN = 1f;
-    private const float SEEE_COOLDOWN = 1f;
+    private const float SOICT_COOLDOWN = 10f;
+    private const float SME_COOLDOWN = 10f;
+    private const float SCLS_COOLDOWN = 10f;
+    private const float SEEE_COOLDOWN = 10f;
     
     private SOICTSkill soictSkill;
     private SMESkill smeSkill;

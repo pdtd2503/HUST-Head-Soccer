@@ -2222,7 +2222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 566f0c7463e75cf4185d2177683ccdfc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController2D
-  characterData: {fileID: 11400000, guid: 5587deddcb0bb4a92b32b1ce63f1a7a2, type: 2}
+  characterData: {fileID: 11400000, guid: 355ef55cdd56e4e31a697589c0bcd4a8, type: 2}
   isPlayer1: 1
   headRenderer: {fileID: 533128209}
   footRenderer: {fileID: 659885526}
@@ -2749,7 +2749,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MapAudio
   audioType: 0
   mapName: MoonMap
-  bgmVolume: 0.6
+  bgmVolume: 0.7
 --- !u!4 &803175901
 Transform:
   m_ObjectHideFlags: 0
@@ -4540,7 +4540,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 566f0c7463e75cf4185d2177683ccdfc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController2D
-  characterData: {fileID: 11400000, guid: 666a06c9f149a4669b1d4cfc2b223317, type: 2}
+  characterData: {fileID: 11400000, guid: 355ef55cdd56e4e31a697589c0bcd4a8, type: 2}
   isPlayer1: 0
   headRenderer: {fileID: 445637107}
   footRenderer: {fileID: 364604726}
