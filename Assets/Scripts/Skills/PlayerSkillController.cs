@@ -7,7 +7,7 @@ public class PlayerSkillController : MonoBehaviour
 
     private const float SOICT_COOLDOWN = 10f;
     private const float SME_COOLDOWN = 10f;
-    private const float SCLS_COOLDOWN = 10f;
+    private const float SCLS_COOLDOWN = 12f;
     private const float SEEE_COOLDOWN = 10f;
     
     private SOICTSkill soictSkill;
@@ -70,11 +70,12 @@ public class PlayerSkillController : MonoBehaviour
         }
 
         RefreshReferences();
-
         SkillType skillType = playerController.characterData.skillType;
-
-        UseSkill(skillType);
-        ResetSkillCharge();
+        bool skillUsed = TryUseSkill(skillType);
+        if (skillUsed)
+        {
+            ResetSkillCharge();
+        }
     }
 
     private void UpdateSkillCharge()
@@ -205,29 +206,44 @@ public class PlayerSkillController : MonoBehaviour
         return skill;
     }
 
-    private void UseSkill(SkillType skillType)
+    private bool IsBallInStraightShot()
+    {
+        if (ballRb == null) return false;
+
+        SoictBallStraightShotRuntime runtime = ballRb.GetComponent<SoictBallStraightShotRuntime>();
+        if (runtime == null) return false;
+
+        return runtime.IsStraightShotActive();
+    }
+
+    private bool TryUseSkill(SkillType skillType)
     {
         switch (skillType)
         {
             case SkillType.SOICT:
+                if (IsBallInStraightShot())
+                {
+                    Debug.Log("Bóng đang trong trạng thái đá thẳng, không thể dùng SOICT!");
+                    return false; // không reset cooldown
+                }
                 soictSkill.UseSkill(playerController, ballRb);
-                break;
+                return true;
 
             case SkillType.SME:
                 smeSkill.UseSkill(playerController, matchManager);
-                break;
+                return true;
 
             case SkillType.SCLS:
                 sclsSkill.UseSkill(playerController, opponentController);
-                break;
+                return true;
 
             case SkillType.SEEE:
                 seeeSkill.UseSkill(playerController, ball);
-                break;
+                return true;
 
             default:
                 Debug.LogWarning($"Unhandled skill type: {skillType}");
-                break;
+                return false;
         }
     }
 

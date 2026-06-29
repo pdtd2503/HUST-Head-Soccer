@@ -4,7 +4,7 @@ using UnityEngine;
 public class SCLSSkill : MonoBehaviour
 {
     private const float SHRINK_SCALE_MULTIPLIER = 0.5f;
-    private const float SHRINK_DURATION = 4f;
+    private const float SHRINK_DURATION = 3f;
     private const float FLASH_DURATION = 0.05f;
     private const int FLASH_COUNT = 4;
 
@@ -168,6 +168,8 @@ class SclsShrinkRuntime : MonoBehaviour
         {
             playerController.SetShrunken(true);
             playerController.SetTemporarySpeedStars(1, duration);
+            playerController.SetTemporaryJumpMultiplier(0.7f, duration); 
+            playerController.SetTemporaryMassStars(1, duration);     
         }
 
         yield return new WaitForSeconds(duration);

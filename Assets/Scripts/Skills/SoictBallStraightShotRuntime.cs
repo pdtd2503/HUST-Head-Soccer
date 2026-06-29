@@ -35,6 +35,11 @@ public class SoictBallStraightShotRuntime : MonoBehaviour
         }
     }
 
+    public bool IsStraightShotActive()
+    {
+        return isStraightShotActive;
+    }
+    
     public void ActivateStraightShot(int direction, float speed, float maxDuration)
     {
         if (rb == null)

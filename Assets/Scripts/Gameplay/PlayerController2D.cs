@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using System.Collections;
 public class PlayerController2D : MonoBehaviour
 {
     [Header("Character Data")]
@@ -109,6 +109,18 @@ public class PlayerController2D : MonoBehaviour
     public void SetShrunken(bool value)
     {
         isShrunken = value;
+    }
+
+    private bool isCastingSkill = false;
+
+    public bool IsCastingSkill()
+    {
+        return isCastingSkill;
+    }
+
+    public void SetCastingSkill(bool value)
+    {
+        isCastingSkill = value;
     }
 
     private void FixedUpdate()
@@ -471,4 +483,34 @@ public class PlayerController2D : MonoBehaviour
         moveSpeed = baseMoveSpeed;
         speedBoostCoroutine = null;
     }
-}
+    // Giảm jump tạm thời
+    public void SetTemporaryJumpMultiplier(float multiplier, float duration)
+    {
+        StartCoroutine(TemporaryJumpRoutine(multiplier, duration));
+    }
+
+    private IEnumerator TemporaryJumpRoutine(float multiplier, float duration)
+    {
+        float originalJumpForce = jumpForce;
+        jumpForce = jumpForce * multiplier; // giảm 50% jumpForce hiện tại
+
+        yield return new WaitForSeconds(duration);
+
+        jumpForce = originalJumpForce;
+    }
+        // Giảm mass tạm thời
+    public void SetTemporaryMassStars(int stars, float duration)
+    {
+        StartCoroutine(TemporaryMassRoutine(stars, duration));
+    }
+
+    private IEnumerator TemporaryMassRoutine(int stars, float duration)
+    {
+        float originalMass = rb.mass;
+        rb.mass = CharacterStats.GetMass(stars);
+
+        yield return new WaitForSeconds(duration);
+
+        rb.mass = originalMass;
+    }
+    }
