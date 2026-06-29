@@ -7,7 +7,7 @@ public class SMESkill : MonoBehaviour
     private const float WALL_GOAL_OFFSET_P1 = 1f;  // offset cho Player 1
     private const float WALL_GOAL_OFFSET_P2 = 1.4f;  // offset riêng cho Player 2, chỉnh số này
     private const float APPEAR_DURATION = 0.6f;
-    private const float GROUND_Y = 0.6f;
+    private const float GROUND_Y = 0.4f;
 
     private GameObject rockWallPrefab;
 
