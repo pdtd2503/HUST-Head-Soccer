@@ -24,7 +24,7 @@ public class SEEESkill : MonoBehaviour
         return;
         
     }
-    AudioManager.Instance?.PlaySkillSEEE();
+    AudioManager.Instance?.PlaySkillSEEE(1.5f);
     int attackDirection = playerController.GetAttackDirection();
     Vector3 targetPosition = playerController.transform.position;
     targetPosition.x = ball.position.x - attackDirection * BALL_OFFSET;

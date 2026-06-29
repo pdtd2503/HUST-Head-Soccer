@@ -11,7 +11,7 @@ public class SOICTSkill : MonoBehaviour
         {
             return;
         }
-        AudioManager.Instance?.PlaySkillSOICT(); 
+        AudioManager.Instance?.PlaySkillSOICT(2.5f); 
         SoictBallStraightShotRuntime straightShotRuntime =
             ballRb.GetComponent<SoictBallStraightShotRuntime>();
 
