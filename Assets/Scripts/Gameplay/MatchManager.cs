@@ -33,6 +33,9 @@ public class MatchManager : MonoBehaviour
     public GoalEffectManager goalEffectManager;
     public CameraShake cameraShake;
 
+    [Header("Normal Map Obstacle")]
+    public RainSpawner rainSpawner;
+
     private float timer;
 
     private int player1Score;
@@ -154,6 +157,11 @@ public class MatchManager : MonoBehaviour
         {
             cameraShake = FindFirstObjectByType<CameraShake>();
         }
+
+        if (rainSpawner == null)
+        {
+            rainSpawner = FindFirstObjectByType<RainSpawner>();
+        }
     }
 
     private void EndMatch()
@@ -171,6 +179,7 @@ public class MatchManager : MonoBehaviour
 
         StopAllBodies();
         FreezeAllBodies();
+        StopObstacleSpawningAndClearObstacles();
 
         UnlockGoalTriggers();
 
@@ -243,11 +252,14 @@ public class MatchManager : MonoBehaviour
 
         StopAllBodies();
 
+        StopObstacleSpawningAndClearObstacles();
+
         if (IsGoldenGoalMatch() || suddenDeathActive)
         {
             yield return StartCoroutine(EndMatchAfterGoal());
             yield break;
         }
+
         yield return new WaitForSeconds(goalPauseDuration);
 
         if (matchEnded)
@@ -260,6 +272,8 @@ public class MatchManager : MonoBehaviour
         ResetPositions();
 
         UnlockGoalTriggers();
+
+        ResumeObstacleSpawning();
 
         goalSequenceRunning = false;
     }
@@ -618,11 +632,31 @@ public class MatchManager : MonoBehaviour
         HideGoalText();
 
         StopAllBodies();
+        StopObstacleSpawningAndClearObstacles();
+
         ResetPositions();
         UnlockGoalTriggers();
+
+        ResumeObstacleSpawning();
 
         AudioManager.Instance?.PlaySuddenDeath();
 
         Debug.Log("Tournament match is tied. Sudden Death started.");
+    }
+
+    private void StopObstacleSpawningAndClearObstacles()
+    {
+        if (rainSpawner != null)
+        {
+            rainSpawner.StopSpawningAndClearObstacles();
+        }
+    }
+
+    private void ResumeObstacleSpawning()
+    {
+        if (rainSpawner != null && !matchEnded)
+        {
+            rainSpawner.StartSpawning();
+        }
     }
 }
