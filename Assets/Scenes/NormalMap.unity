@@ -245,6 +245,7 @@ MonoBehaviour:
   goalText: {fileID: 0}
   goalEffectManager: {fileID: 1431564111}
   cameraShake: {fileID: 519420033}
+  rainSpawner: {fileID: 0}
 --- !u!4 &250384402
 Transform:
   m_ObjectHideFlags: 0
@@ -3944,7 +3945,7 @@ MonoBehaviour:
   leftX: -8
   rightX: 8
   spawnY: 6
-  interval: 0.5
+  interval: 2
 --- !u!4 &1392958120
 Transform:
   m_ObjectHideFlags: 0

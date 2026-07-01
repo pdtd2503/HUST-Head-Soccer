@@ -14,7 +14,7 @@ public class RainSpawner : MonoBehaviour
     public float interval = 2f;
 
     private readonly List<GameObject> spawnedObstacles = new();
-    private bool spawningEnabled = true;
+    private bool spawningEnabled;
 
     private void Start()
     {
@@ -23,6 +23,12 @@ public class RainSpawner : MonoBehaviour
 
     public void StartSpawning()
     {
+        if (obstacle == null)
+        {
+            Debug.LogWarning("RainSpawner: obstacle prefab is null.");
+            return;
+        }
+
         spawningEnabled = true;
 
         CancelInvoke(nameof(Spawn));
@@ -32,6 +38,8 @@ public class RainSpawner : MonoBehaviour
             1f,
             interval
         );
+
+        Debug.Log("RainSpawner: Start spawning books.");
     }
 
     public void StopSpawningAndClearObstacles()
@@ -40,6 +48,13 @@ public class RainSpawner : MonoBehaviour
 
         CancelInvoke(nameof(Spawn));
 
+        ClearObstacles();
+
+        Debug.Log("RainSpawner: Stop spawning and clear books.");
+    }
+
+    public void ClearObstacles()
+    {
         for (int i = spawnedObstacles.Count - 1; i >= 0; i--)
         {
             if (spawnedObstacles[i] != null)
@@ -49,17 +64,6 @@ public class RainSpawner : MonoBehaviour
         }
 
         spawnedObstacles.Clear();
-
-        FallingObstacle[] obstacles =
-            FindObjectsByType<FallingObstacle>(FindObjectsSortMode.None);
-
-        foreach (FallingObstacle obstacleObject in obstacles)
-        {
-            if (obstacleObject != null)
-            {
-                Destroy(obstacleObject.gameObject);
-            }
-        }
     }
 
     private void Spawn()

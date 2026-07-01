@@ -273,9 +273,9 @@ public class MatchManager : MonoBehaviour
 
         UnlockGoalTriggers();
 
-        ResumeObstacleSpawning();
-
         goalSequenceRunning = false;
+
+        ResumeObstacleSpawning();
     }
 
     private void ShowGoalText(int scoringPlayer)
@@ -654,6 +654,11 @@ public class MatchManager : MonoBehaviour
 
     private void ResumeObstacleSpawning()
     {
+        if (rainSpawner == null)
+        {
+            rainSpawner = FindFirstObjectByType<RainSpawner>();
+        }
+
         if (rainSpawner != null && !matchEnded)
         {
             rainSpawner.StartSpawning();
