@@ -3025,7 +3025,7 @@ MonoBehaviour:
   gustMaxInterval: 18
   gustForce: 10
   gustDuration: 1
-  gustMaxVerticalAngle: 45
+  gustMaxVerticalAngle: 40
   ballTag: Ball
   leafSprite: {fileID: 6291323120199574886, guid: 1f14f53f647cc5d429b2eb31ecc100c6, type: 3}
   leafSpawnInterval: 0.3
@@ -3184,6 +3184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 987a255c653584f44b6428ffe5fa281a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapAudio
+  audioType: 0
   mapName: WindMap
   bgmVolume: 0.5
 --- !u!4 &1214754872

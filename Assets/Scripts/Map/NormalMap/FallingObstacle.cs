@@ -29,7 +29,7 @@ public class FallingObstacle : MonoBehaviour
         {
             Debug.Log("FallingObstacle: Tìm thấy PlayerController2D!");
             
-            player.Stun(0.5f);
+            player.Stun(0.75f);
 
             StunEffectRunner runner = player.GetComponent<StunEffectRunner>();
             if (runner == null)
@@ -42,7 +42,7 @@ public class FallingObstacle : MonoBehaviour
 
             runner.PlayStunEffect(
                 player.transform,
-                0.5f,
+                0.75f,
                 starPrefab,
                 starCount,
                 orbitRadius,

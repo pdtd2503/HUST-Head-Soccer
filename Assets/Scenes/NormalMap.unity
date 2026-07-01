@@ -3944,7 +3944,7 @@ MonoBehaviour:
   leftX: -8
   rightX: 8
   spawnY: 6
-  interval: 2
+  interval: 0.5
 --- !u!4 &1392958120
 Transform:
   m_ObjectHideFlags: 0
