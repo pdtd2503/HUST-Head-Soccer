@@ -18,8 +18,8 @@ MonoBehaviour:
   footRightSprite: {fileID: 21300000, guid: 1973ac0954dbb5840ba337822400b5ef, type: 3}
   footLeftSprite: {fileID: 21300000, guid: aa3c094ee03f8404b9a0b55d855028de, type: 3}
   jumpStars: 3
-  speedStars: 3
-  kickStars: 1
+  speedStars: 4
+  kickStars: 3
   massStars: 3
   skillType: 0
   skillDescription: "Hack qu\u1EF9 \u0111\u1EA1o qu\u1EA3 b\xF3ng khi\u1EBFn b\xF3ng
