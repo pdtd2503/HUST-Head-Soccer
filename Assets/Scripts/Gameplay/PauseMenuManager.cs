@@ -10,11 +10,14 @@ public class PauseMenuManager : MonoBehaviour
     public string mainMenuSceneName = "MainMenuScene";
 
     private bool isPaused;
+    private MatchManager matchManager;
 
     private void Start()
     {
         Time.timeScale = 1f;
         isPaused = false;
+
+        matchManager = FindFirstObjectByType<MatchManager>();
 
         if (pausePanel != null)
         {
@@ -44,12 +47,18 @@ public class PauseMenuManager : MonoBehaviour
             return;
         }
 
+        if (matchManager != null && matchManager.IsGoalSequenceRunning())
+        {
+            return;
+        }
+
         isPaused = true;
         Time.timeScale = 0f;
 
         if (pausePanel != null)
         {
             pausePanel.SetActive(true);
+            pausePanel.transform.SetAsLastSibling();
         }
     }
 

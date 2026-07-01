@@ -205,6 +205,11 @@ public class MatchManager : MonoBehaviour
         return matchRunning && !matchEnded && !goalSequenceRunning;
     }
 
+    public bool IsGoalSequenceRunning()
+    {
+        return goalSequenceRunning;
+    }
+
     public void ScoreGoal(int scoringPlayer)
     {
         if (!CanScore())
